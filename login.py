@@ -10,8 +10,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 800
 
 
 dummy_user = {
-    "username": "rasyue",
-    "password": "rasyuepassword",
+    "username": "famaf01",
+    "password": "nuevofamaf",
 }
 
 
@@ -21,6 +21,8 @@ app = FastAPI()
 class LoginItem(BaseModel):
     username: str
     password: str
+
+    
 @app.get("/")
 def read_root():
     return {"Bienvenido de nuevo"}
