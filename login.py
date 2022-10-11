@@ -10,7 +10,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 800
 
 
 dummy_user = {
-    "username": "famaf01",
+    "email": "famaf01",
     "password": "nuevofamaf",
 }
 
@@ -22,7 +22,7 @@ class LoginItem(BaseModel):
     username: str
     password: str
 
-    
+
 @app.get("/")
 def read_root():
     return {"Bienvenido de nuevo"}
@@ -31,7 +31,7 @@ def read_root():
 @app.post("/login")
 async def login_user(login_item: LoginItem):
     data = jsonable_encoder(login_item)
-    if dummy_user['username'] == data['username'] and dummy_user['username'] == data['username']:
+    if dummy_user['email'] == data['email'] and dummy_user['password'] == data['password']:
         encoded_jwt = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
         return {'token': encoded_jwt }
     else:
