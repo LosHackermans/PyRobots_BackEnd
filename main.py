@@ -9,6 +9,7 @@ from fastapi.encoders import jsonable_encoder
 #Se importa la base de datos
 from models import db
 
+
  
 # TODO: put some of this in .env file
 SECRET_KEY = "my_secret_key"
@@ -21,7 +22,7 @@ app = FastAPI()
 
 # Usuario generico de prueba
 dummy_user = {
-    "email": "famaf01",
+    "email": "famaf01@gmail.com",
     "password": "nuevofamaf"
 }
  
@@ -49,29 +50,29 @@ def read_root():
     return {"Bienvenido de nuevo!!!"}
  
  
+# @app.post("/")
+# async def login_user(login_item: LoginItem):
+#     data = jsonable_encoder(login_item)
+#     with db_session:
+#         if User.exist(email == data['email']):
+#             currentUser = User.select(lambda u: u.email==data['email'])
+#             if currentUser.password == data['password']:
+#                 encoded_jwt = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+#                 return {'token': encoded_jwt}
+#             else:
+#                 return  {'error': 'Password incorrecta'}
+#         elif not(User.exist(email == data['email'])):
+#             return {'error': 'No existe el usuario'}
+#         else:
+#             return {'error': 'Login failed'}
+
+
+
 @app.post("/login")
 async def login_user(login_item: LoginItem):
     data = jsonable_encoder(login_item)
-    with db_session:
-        if User.exist(email == data['email']):
-            currentUser = User.select(lambda u: u.email==data['email'])
-            if currentUser.password == data['password']:
-                encoded_jwt = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
-                return {'token': encoded_jwt}
-            else:
-                return  {'error': 'Password incorrecta'}
-        elif not(User.exist(email == data['email'])):
-            return {'error': 'No existe el usuario'}
-        else:
-            return {'error': 'Login failed'}
-
-
-
-# @app.post("/login")
-# async def login_user(login_item: LoginItem):
-#     data = jsonable_encoder(login_item)
-#     if dummy_user['email'] == data['email'] and dummy_user['password'] == data['password']:
-#         encoded_jwt = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
-#         return {'token': encoded_jwt}
-#     else:
-#         return {'error': 'Login failed'}
+    if dummy_user['email'] == data['email'] and dummy_user['password'] == data['password']:
+        encoded_jwt = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+        return {'token': encoded_jwt}
+    else:
+        return {'error': 'Login failed'}
