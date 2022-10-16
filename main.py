@@ -1,11 +1,9 @@
-from re import A
+from nis import match
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import jwt
 from pydantic import BaseModel
-from fastapi.encoders import jsonable_encoder
-from typing import Union
-from fastapi import FastAPI, Request
+from fastapi import Request
 from sqlalchemy import true
 
 # Se importa la base de datos
@@ -79,13 +77,14 @@ async def user_creatematch(body: Body, request: Request):
         return {'error': 'number of players invalid'}
     else:
         with db_session:
-            m1 = Match(name=body.name, min_players=body.min_players,
+            match_id: int
+            match = Match(name=body.name, min_players=body.min_players,
                        max_players=body.max_players, number_rounds=body.number_of_rounds,
                        number_games=body.number_of_games, joinable=true,
                        user=curent_user)
-            m1.robot_in_matches.add(Robot[body.id_robot])
+            match.robot_in_matches.add(Robot[body.id_robot])
             commit()
-            if m1.id != None:
-                return {m1.id: int}
+            if match.id != None:
+                return {match_id: match.id}
             else:
                 return {'error': 'Create match failed'}
