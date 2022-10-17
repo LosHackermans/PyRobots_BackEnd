@@ -55,5 +55,3 @@ async def list_robots(request: Request):
         else:
             user_robots = get_user_robots(curent_user)
             return {'robots':user_robots}
-with db_session:
-   User(username = "pedro", email = "famaf01@gmail.com", password = "nuevofamaf", is_validated = True)
