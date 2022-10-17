@@ -7,19 +7,14 @@ from .main import *
 client = TestClient(app)
 
 
-def test_root():
-    response = client.get('/')
-    assert response.status_code == 200
-    assert response.json() == {"message": "Hello World"}
-
-
 def test_create_user():
     response = client.post(
         '/signup',
         json = {
                 "username": "Juan2",
                 "email": "juanpereez@gmail.com",
-                "password": "password"
+                "password": "password",
+                "passwordRepeated": "password"
             })
     assert response.status_code == 200
     assert response.json() == {"message": "User created successfully"}
@@ -37,7 +32,8 @@ def test_repeated_username():
         json = {
                 "username": "testUser",
                 "email": "testUsername@gmail.com",
-                "password": "password"
+                "password": "password",
+                "passwordRepeated": "password"
             })
     assert response.status_code == 400
     assert response.json() == {"detail": "User with this username already exists"} 
@@ -55,7 +51,8 @@ def test_repeated_email():
         json = {
                 "username": "testEmail_2",
                 "email": "testEmail@gmail.com",
-                "password": "password"
+                "password": "password",
+                "passwordRepeated": "password"
             })
     assert response.status_code == 400
     assert response.json() == {"detail": "User with this email already exists"} 
@@ -66,10 +63,23 @@ def test_bad_password():
         json = {
                 "username": "testPassword",
                 "email": "testPassword@gmail.com",
-                "password": "pass"
+                "password": "pass",
+                "passwordRepeated": "pass"
             })
     assert response.status_code == 400
     assert response.json() == {"detail": "The password must have a minimum of 8 characters"} 
+
+def test_bad_repeated_password():
+    response = client.post(
+        '/signup',
+        json = {
+                "username": "testPassword2",
+                "email": "testPassword2@gmail.com",
+                "password": "password",
+                "passwordRepeated": "password2"
+            })
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Passwords do not match"} 
 
 
 
