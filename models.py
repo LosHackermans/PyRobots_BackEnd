@@ -30,7 +30,8 @@ class Match(db.Entity):
     max_players = Required(int)
     number_rounds = Required(int)
     number_games = Required(int)
-    joinable = Required(bool)
+    is_joinable = Required(bool)
+    pasword = Optional(str)
     user = Required(User)
     robot_in_matches = Set('Robot_in_match')
 
