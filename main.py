@@ -72,7 +72,7 @@ async def user_creatematch(body: Body, request: Request):
         return {'error': 'number of players invalid'}
     else:
         with db_session:
-            token = request.headers.get("Authotization")
+            token = request.headers.get("authorization")
             if token[0:7] != "Bearer ":
                 return {'error': 'Invalid header'}
             else:

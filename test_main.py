@@ -34,7 +34,7 @@ def test_read_main():
 def test_create_item():
     response = client.post(
         "/create_match",
-        headers={"Authotization": "Bearer " + encoded},
+        headers={"authorization": "Bearer " + encoded},
         json = {"name": "example", "number_of_rounds": 200, "number_of_games": 100, 
         "min_players": 2, "max_players": 4, "pasword": "add","id_robot": 1}
     )
@@ -43,7 +43,7 @@ def test_create_item():
 def test_bad_create_item():
     response = client.post(
         "/create_match",
-        headers={"Authotization": "Bearer " + encoded},
+        headers={"authorization": "Bearer " + encoded},
         json = {"name": "example", "number_of_rounds": 200, "number_of_games": 500, 
         "min_players": 2, "max_players": 4,"pasword": "add", "id_robot": 1}
     )
@@ -53,7 +53,7 @@ def test_bad_create_item():
 def test_read_item_bad_token():
     response = client.post(
         "/create_match",
-        headers={"Authotization": "Bearer " + encoded2},
+        headers={"authorization": "Bearer " + encoded2},
         json = {"name": "example", "number_of_rounds": 200, "number_of_games": 100, 
         "min_players": 2, "max_players": 4, "pasword": "add", "id_robot": 1}
     )
