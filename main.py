@@ -28,13 +28,13 @@ test_user = {
 }
 
 # body que me deberian pasar en el request
-class Body(BaseModel):
+class BodyMatch(BaseModel):
     name: str
     number_of_rounds: int
     number_of_games: int
     min_players: int
     max_players: int
-    pasword: str
+    password: str
     id_robot: int
 
 class signUpModel(BaseModel):
@@ -51,6 +51,11 @@ class signUpModel(BaseModel):
                 "password": "password"
             }
         }
+
+class Body(BaseModel):
+    name: str
+    #avatar: str        #aun no acepta png
+    script: str
 
 
 origins = {
@@ -72,16 +77,6 @@ def get_current_user(data):
     current_user = User.get(email=current_user_info["email"])
     return current_user
 
-
-
-
-# body que me deberian pasar en el request
-
-
-class Body(BaseModel):
-    name: str
-    #avatar: str        #aun no acepta png
-    script: str
 
 
 origins = {
@@ -115,7 +110,7 @@ async def user_creatematch(body: Body, request: Request):
     with db_session:
         token = request.headers.get("authorization")
         print(request.headers)
-        if token is None or token[0:7] != "Bearer ":
+        if token[0:7] != "Bearer ":
             return {'error': 'Invalid header'}
         else:
             token = token[7:]
@@ -168,7 +163,7 @@ def read_root():
 
 
 @app.post("/create_match")
-async def user_creatematch(body: Body, request: Request):
+async def user_creatematch(body: BodyMatch, request: Request):
     if body.number_of_rounds > 10000 or body.number_of_rounds < 0:
         return {'error': 'number of rounds invalid'}
     elif body.number_of_games > 200 or body.number_of_games < 0:
@@ -188,7 +183,7 @@ async def user_creatematch(body: Body, request: Request):
             match = Match(name=body.name, min_players=body.min_players,
                           max_players=body.max_players, number_rounds=body.number_of_rounds,
                           number_games=body.number_of_games, is_joinable=True,
-                          pasword=body.pasword,
+                          password=body.password,
                           user=curent_user)
             commit()
             if match.id != None:

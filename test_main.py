@@ -26,10 +26,10 @@ def test_create_user():
     response = client.post(
         '/create_user',
         json = {
-                "username": "Juan2",
-                "email": "juanpereez@gmail.com",
-                "password": "password",
-                "passwordRepeated": "password"
+                "username": "Juan5",
+                "email": "juanpereez@gmail.co5",
+                "password": "password"
+                #"passwordRepeated": "password"
             })
     assert response.status_code == 200
     assert response.json() == {"message": "User created successfully"}
@@ -84,6 +84,7 @@ def test_bad_password():
     assert response.status_code == 400
     assert response.json() == {"detail": "The password must have a minimum of 8 characters"} 
 
+""""
 def test_bad_repeated_password():
     response = client.post(
         '/create_user',
@@ -95,21 +96,16 @@ def test_bad_repeated_password():
             })
     assert response.status_code == 400
     assert response.json() == {"detail": "Passwords do not match"} 
-
+"""
 
 # test create match
-def test_read_main3():
-    response = client.get("/")
-    assert response.status_code == 200
-    assert response.json() == {"msg": "Bienvenido de nuevo!!!"}
-
 
 def test_create_item3():
     response = client.post(
         "/create_match",
         headers={"authorization": "Bearer " + encoded},
         json = {"name": "example", "number_of_rounds": 200, "number_of_games": 100, 
-        "min_players": 2, "max_players": 4, "pasword": "add","id_robot": 1}
+        "min_players": 2, "max_players": 4, "password": "add","id_robot": 1}
     )
     assert response.status_code == 200
     
@@ -118,7 +114,7 @@ def test_bad_create_item3():
         "/create_match",
         headers={"authorization": "Bearer " + encoded},
         json = {"name": "example", "number_of_rounds": 200, "number_of_games": 500, 
-        "min_players": 2, "max_players": 4,"pasword": "add", "id_robot": 1}
+        "min_players": 2, "max_players": 4,"password": "add", "id_robot": 1}
     )
     assert response.status_code == 200    
     assert response.json() == {'error': 'number of games invalid'}
@@ -128,7 +124,7 @@ def test_read_item_bad_token3():
         "/create_match",
         headers={"authorization": "Bearer " + encoded2},
         json = {"name": "example", "number_of_rounds": 200, "number_of_games": 100, 
-        "min_players": 2, "max_players": 4, "pasword": "add", "id_robot": 1}
+        "min_players": 2, "max_players": 4, "password": "add", "id_robot": 1}
     )
     assert response.status_code == 200
     assert response.json() == {"error": "Invalid X-Token header"}
@@ -144,7 +140,7 @@ def test_read_item_bad_token3():
 def test_read_main():
     response = client.post(
         "/upload_robot",
-        headers={"Authotization": "Bearer " + encoded},
+        headers={"authorization": "Bearer " + encoded},
         json = {"name": "example", "script": "acd"}
     )
     assert response.status_code == 200
@@ -153,7 +149,7 @@ def test_read_main():
 def test_bad_create_item():
     response = client.post(
         "/upload_robot",
-        headers={"Authotization": "Bearer " + encoded2},
+        headers={"authorization": "Bearer " + encoded2},
         json = {"name": "example", "script": "acd"}
     )
     assert response.status_code == 200    
