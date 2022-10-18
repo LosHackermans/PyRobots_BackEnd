@@ -1,14 +1,14 @@
-from fastapi import FastAPI
+import email
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import jwt
 from pydantic import BaseModel
-from fastapi import Request, HTTPException
-import base64 
-  
-  
-
-# Se importa la base de datos
+import base64
 from models import *
+from fastapi.encoders import jsonable_encoder
+from typing import Optional
+import json
+from pony.orm import db_session
 
 # TODO: put some of this in .env file
 SECRET_KEY = "my_secret_key"
@@ -16,7 +16,8 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 800
 FRONTEND_URL = "http://localhost:3001"
 
-app = FastAPI()
+
+
 
 # body que me deberian pasar en el request
 
@@ -73,3 +74,33 @@ async def user_creatematch(body: Body, request: Request):
             return {'detail': "Robot created"}
         else:
             return {'error': 'Create robot failed'}
+
+ 
+class LoginItem(BaseModel):
+    email: str
+    password: str
+ 
+ 
+@app.get("/")
+def read_root():
+    return {"Bienvenido de nuevo!!!"}
+ 
+ 
+ 
+@app.post("/login")
+async def login_user(login_item: LoginItem):
+    data = jsonable_encoder(login_item)
+    with db_session:
+        if User.exists(email = data["email"]):
+            currentUser = User.get(lambda u: u.email==data["email"])
+            if currentUser.password == data["password"]:
+                encoded_jwt = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+                return {'token': encoded_jwt}
+            else:
+                return  {'error': ' incorrect Password'}
+        elif not(User.exists(email = data["email"])):
+            return {'error': 'User not exist'}
+        else:
+            return {'error': 'Login failed'}
+
+
