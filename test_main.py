@@ -1,5 +1,5 @@
-from .main import *
 from fastapi.testclient import TestClient
+from .main import *
 import jwt
 
 client = TestClient(app)
@@ -19,7 +19,6 @@ encoded = encoded_jwt.decode("utf-8")
 
 encoded_jwt2 = jwt.encode(dummy_user2, SECRET_KEY, algorithm=ALGORITHM)
 encoded2 = encoded_jwt2.decode("utf-8")
-
 
 
 #test list robots
@@ -47,6 +46,7 @@ def test_bad_header_read_main4():
     )
     assert response.status_code == 200
     assert response.json() == {'error': 'Invalid header'}
+
 # test create user
 def test_create_user():
     response = client.post(
@@ -201,4 +201,3 @@ def test_bad_read_main2():
     )
     assert response.status_code == 200
     assert response.json() == {'error': ' incorrect Password'}
-
