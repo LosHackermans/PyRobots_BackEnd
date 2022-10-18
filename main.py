@@ -15,7 +15,6 @@ class signUpModel(BaseModel):
     username: str
     email: str
     password: str 
-    passwordRepeated: str
     # avatar: Optional[str]
 
     class Config:
@@ -23,8 +22,7 @@ class signUpModel(BaseModel):
             'example':{
                 "username": "Juan",
                 "email": "juanperez@gmail.com",
-                "password": "password",
-                "passwordRepeated": "password"
+                "password": "password"
             }
         }
 
@@ -47,9 +45,9 @@ async def signup(user: signUpModel):
         if len(user.password) < 8:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                 detail= "The password must have a minimum of 8 characters")
-        if user.password != user.passwordRepeated:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                detail= "Passwords do not match")
+        #if user.password != user.passwordRepeated:
+            #raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                #detail= "Passwords do not match")
 
         User(
         username = user.username,
