@@ -26,7 +26,7 @@ encoded2 = encoded_jwt2.decode("utf-8")
 def test_read_main():
     response = client.get(
         "/robots",
-        headers={"Authotization": "Bearer " + encoded}
+        headers={"authorization": "Bearer " + encoded}
     )
     assert response.status_code == 200
     assert response.json() == {"robots":[{'id': 3, 'name': 'example3'}, {'id': 6, 'name': 'example3'}, {'id': 2, 'name': 'example2'},
@@ -35,7 +35,7 @@ def test_read_main():
 def test_bad_token_read_main():
     response = client.get(
         "/robots",
-        headers={"Authotization": "Bearer " + encoded2}
+        headers={"authorization": "Bearer " + encoded2}
     )
     assert response.status_code == 200
     assert response.json() == {'error': 'Invalid X-Token header'}
@@ -43,7 +43,7 @@ def test_bad_token_read_main():
 def test_bad_header_read_main():
     response = client.get(
         "/robots",
-        headers={"Authotization": encoded}
+        headers={"authorization": encoded}
     )
     assert response.status_code == 200
     assert response.json() == {'error': 'Invalid header'}

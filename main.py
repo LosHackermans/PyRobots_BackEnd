@@ -44,7 +44,7 @@ app.add_middleware(
 @app.get("/robots")
 async def list_robots(request: Request):
     with db_session:
-        token = request.headers.get("Authotization")
+        token = request.headers.get("authorization")
         if token[0:7] != "Bearer ":
             return {'error': 'Invalid header'}
         else:
