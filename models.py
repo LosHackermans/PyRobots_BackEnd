@@ -1,6 +1,5 @@
 from pony.orm import *
 
-
 db = Database()
 
 
@@ -31,6 +30,8 @@ class Match(db.Entity):
     max_players = Required(int)
     number_rounds = Required(int)
     number_games = Required(int)
+    is_joinable = Required(bool)
+    password = Optional(str)
     user = Required(User)
     robot_in_matches = Set('Robot_in_match')
 
@@ -40,7 +41,6 @@ class Robot_in_match(db.Entity):
     games_won = Required(int)
     games_draw = Required(int)
     match = Required(Match)
-
 
 db.bind(provider='sqlite', filename='database.sqlite', create_db=True)
 
