@@ -9,7 +9,7 @@ client = TestClient(app)
 
 def test_create_user():
     response = client.post(
-        '/signup',
+        '/create_user',
         json = {
                 "username": "Juan2",
                 "email": "juanpereez@gmail.com",
@@ -28,7 +28,7 @@ def test_repeated_username():
             is_validated = False
             )
     response = client.post(
-        '/signup',
+        '/create_user',
         json = {
                 "username": "testUser",
                 "email": "testUsername@gmail.com",
@@ -47,7 +47,7 @@ def test_repeated_email():
             is_validated = False
             )
     response = client.post(
-        '/signup',
+        '/create_user',
         json = {
                 "username": "testEmail_2",
                 "email": "testEmail@gmail.com",
@@ -59,7 +59,7 @@ def test_repeated_email():
 
 def test_bad_password():
     response = client.post(
-        '/signup',
+        '/create_user',
         json = {
                 "username": "testPassword",
                 "email": "testPassword@gmail.com",
@@ -71,7 +71,7 @@ def test_bad_password():
 
 def test_bad_repeated_password():
     response = client.post(
-        '/signup',
+        '/create_user',
         json = {
                 "username": "testPassword2",
                 "email": "testPassword2@gmail.com",

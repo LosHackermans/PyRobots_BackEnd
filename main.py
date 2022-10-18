@@ -33,7 +33,7 @@ class signUpModel(BaseModel):
 async def root():
     return {"message": "Hello World"}
 
-@app.post('/signup')
+@app.post('/create_user')
 async def signup(user: signUpModel):
     with db_session:
         usernameQuery = select(e.username for e in User if (e.username == user.username))
