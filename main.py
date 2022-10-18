@@ -34,7 +34,7 @@ origins = {
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -48,7 +48,7 @@ def png_to_b64(ph):
         return converted_string
 
 def get_current_user(data):
-    current_user_info = jwt.decode(data, SECRET_KEY, algorithm=ALGORITHM)
+    current_user_info = jwt.decode(data, SECRET_KEY, algorithms=ALGORITHM)
     current_user = User.get(email=current_user_info["email"])
     return current_user
 
@@ -56,8 +56,9 @@ def get_current_user(data):
 @app.post("/upload_robot")
 async def user_creatematch(body: Body, request: Request):
     with db_session:
-        token = request.headers.get("Authotization")
-        if token[0:7] != "Bearer ":
+        token = request.headers.get("authorization")
+        print(request.headers)
+        if token is None or token[0:7] != "Bearer ":
             return {'error': 'Invalid header'}
         else:
             token = token[7:]
