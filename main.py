@@ -49,21 +49,19 @@ def read_root():
     return {"Bienvenido de nuevo!!!"}
  
  
-@db_session() 
+ 
 @app.post("/login")
 async def login_user(login_item: LoginItem):
     data = jsonable_encoder(login_item)
     with db_session:
-        if User.exist(email == data['email']):
-            currentUser = User.get(lambda u: u.email==data['email'])
-            if currentUser.password == data['password']:
+        if User.exists(email = data["email"]):
+            currentUser = User.get(lambda u: u.email==data["email"])
+            if currentUser.password == data["password"]:
                 encoded_jwt = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
                 return {'token': encoded_jwt}
-            elif (currentUser.is_validated):
-                return {'error': 'You are no validated'}    
             else:
                 return  {'error': ' incorrect Password'}
-        elif not(User.exist(email == data['email'])):
+        elif not(User.exists(email = data["email"])):
             return {'error': 'User not exist'}
         else:
             return {'error': 'Login failed'}
