@@ -8,6 +8,7 @@ from fastapi.encoders import jsonable_encoder
 from typing import Optional
 import json
 from pony.orm import db_session
+import store_bot
 
 app = FastAPI()
 # TODO: put some of this in .env file
@@ -118,8 +119,8 @@ async def user_creatematch(body: Body, request: Request):
         if curent_user == None:     # no existe el usuario en la bd
             return {'error': 'Invalid X-Token header'}
         #ph = png_to_b64(body.avatar)       #aun no acepta png
-        robot = Robot(name=body.name, script=body.script,
-                      user=curent_user)
+        #robot = Robot(name=body.name, script=body.script, user=curent_user)
+        store_bot_from_form(curent_user, body.name, body.script)
         commit()
         if robot.id != None:
             return {'detail': "Robot created"}
