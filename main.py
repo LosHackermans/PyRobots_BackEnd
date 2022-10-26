@@ -53,11 +53,17 @@ class signUpModel(BaseModel):
             }
         }
 
+class RobotBodyMatch(BaseModel):
+    name: str
+    id_user: int
+    id_robot: int
+    #avatar
+
 class Body(BaseModel):
     name: str
     #avatar: str        #aun no acepta png
     script: str
-
+    
 
 origins = {
     "http://localhost",
@@ -107,8 +113,13 @@ def get_current_user(data):
 
 
 @app.post("/upload_robot")
-async def user_creatematch(body: Body, request: Request):
+async def user_create_bot(bot: RobotBodyMatch): #REVISAR
     with db_session:
+        user_has_bot_already = select(r.id_robot for r in Robot if (r.id_robot == bot.name)) #Falta que la query mire dentro del usuario, esto está siendo global
+        if len(user_has_bot_already) > 0:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                detail= "Already owns a bot with that name")
+        
         token = request.headers.get("authorization")
         print(request.headers)
         if token[0:7] != "Bearer ":
