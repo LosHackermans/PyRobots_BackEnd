@@ -12,7 +12,9 @@ class Robot():
         self.data["cannon"] = True
         self.data["cannon_degree"] = 0
         self.data["cannon_distance"] = 0
-        self.data[""] = 
+        self.data["scanner_direction"] = 0
+        self.data["scanner_resolution"] = 0
+        self.data["scanned"] = 0
         
         
     def __get_data(self):
@@ -33,19 +35,22 @@ class Robot():
         return cannon_ready
     
     def cannon(self, degree, distance):
-        print("llamada a cannon(%s, %s)" % (degree, distance))
+        #print("llamada a cannon(%s, %s)" % (degree, distance))
         if __es_numero(degree) and __es_numero(distance):
             self.data["cannon_degree"] = degree
             self.data["cannon_distance"] = distance
         
-    def point_scanner(self, direction, resolution_in_degrees):
-        print("llamada a point_scanner(%s, %s)" % (direction, resolution_in_degrees))
+    def point_scanner(self, direction, resolution):
+        #print("llamada a point_scanner(%s, %s)" % (direction, resolution_in_degrees))
+        if __es_numero(direction) and __es_numero(resolution):
+            self.data["scanner_direction"] = direction
+            self.data["scanner_resolution"] = resolution
         
     def scanned(self):
-        print("llamada a scanned")
+        return self.data["scanned"]
         
     def drive(self, direction, velocity):
-        print("llamada a drive(%s, %s)" % (direction, velocity))
+        #print("llamada a drive(%s, %s)" % (direction, velocity))
         if __es_numero(direction) and __es_numero(velocity):
             self.data["direction"] = direction
             self.data["velocity"] = velocity
