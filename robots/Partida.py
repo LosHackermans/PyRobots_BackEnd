@@ -1,11 +1,12 @@
 from time import sleep
+from Map import Map
 import SuperMegaRobot as smr
 
-class BotScheduler():
+class Partida():
     
 
     def __init__(self):
-        print("init de BotScheduler")
+        print("init de Partida")
         self.robots = []
         self.instantiate_bots()
         self.initialize_bots()
@@ -28,6 +29,6 @@ class BotScheduler():
 
 
 if __name__=="__main__":
-    print("main de BotScheduler")
+    print("main de Partida")
     BotScheduler()
     
