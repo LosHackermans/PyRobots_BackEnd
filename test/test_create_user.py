@@ -27,8 +27,8 @@ def test_create_user():
     response = client.post(
         '/create_user',
         json = {
-                "username": "Juan5",
-                "email": "juanpereez@gmail.co5",
+                "username": "Juan6",
+                "email": "juanpereez@gmail.co6",
                 "password": "password"
                 #"passwordRepeated": "password"
             })

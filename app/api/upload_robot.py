@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import jwt
 from pydantic import BaseModel
 import base64
-from api.models import *
+from app.api.models import *
 from fastapi.encoders import jsonable_encoder
 from typing import Optional
 import json
@@ -11,6 +11,9 @@ from pony.orm import db_session
 from fastapi import APIRouter
 
 router = APIRouter()
+SECRET_KEY = "my_secret_key"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 800
 
 class Body(BaseModel):
     name: str
@@ -26,6 +29,10 @@ def png_to_b64(ph):
             converted_string = base64.b64encode(image2string.read())
         return converted_string
 
+def get_current_user(data):
+    current_user_info = jwt.decode(data, SECRET_KEY, algorithms=ALGORITHM)
+    current_user = User.get(email=current_user_info["email"])
+    return current_user
 
 @router.post("/upload_robot")
 async def user_creatematch(body: Body, request: Request):

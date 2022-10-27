@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 #from api import models
-from api import login, create_match, create_user, upload_robot
+from app.api import login, create_match, create_user, upload_robot
 
 app = FastAPI()
 

@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import jwt
 from pydantic import BaseModel
 import base64
-from api.models import *
+from app.api.models import *
 from fastapi.encoders import jsonable_encoder
 from typing import Optional
 import json

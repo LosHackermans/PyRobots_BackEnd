@@ -55,3 +55,4 @@ def test_read_item_bad_token3():
 # necesario para correr los test (hecho en consola)
 # with db_session:
 #    User(username = "pedro", email = "famaf01@gmail.com", password = "nuevofamaf", is_validated = True)
+#    Robot(name = "example",script = "abc", user = User[1])
