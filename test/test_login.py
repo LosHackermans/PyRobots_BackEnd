@@ -22,7 +22,7 @@ encoded_jwt2 = jwt.encode(dummy_user2, SECRET_KEY, algorithm=ALGORITHM)
 encoded2 = encoded_jwt2.decode("utf-8")
 
 #test login
-def test_read_main2():
+def test_login():
     response = client.post(
         "/login",
         json ={"email": 'famaf01@gmail.com', "password": "nuevofamaf"}
@@ -30,7 +30,7 @@ def test_read_main2():
     assert response.status_code == 200
     assert response.json() == {'token': encoded}
 
-def test_bad_read_main2():
+def test_incorrect_password():
     response = client.post(
         "/login",
         json ={"email": 'famaf01@gmail.com', "password": "asd"}
