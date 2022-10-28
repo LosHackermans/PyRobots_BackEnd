@@ -27,11 +27,12 @@ encoded2 = encoded_jwt2.decode("utf-8")
 def test_create_match():
     with db_session:
         Robot(name="robot", script="abc", user=User[1])
+        id = (Robot.get(name="robot")).id
     response = client.post(
         "/create_match",
         headers={"authorization": "Bearer " + encoded},
         json={"name": "example", "number_of_rounds": 200, "number_of_games": 100,
-              "min_players": 2, "max_players": 4, "password": "add", "id_robot": 1}
+              "min_players": 2, "max_players": 4, "password": "add", "id_robot": id}
     )
     assert response.status_code == 200
     with db_session:
