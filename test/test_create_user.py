@@ -29,7 +29,8 @@ def test_create_user():
         json = {
                 "username": "Juan8",
                 "email": "juanpereez@gmail.co8",
-                "password": "password"
+                "password": "password",
+                "avatar": "asdasd"
                 #"passwordRepeated": "password"
             })
     assert response.status_code == 200
@@ -49,6 +50,7 @@ def test_repeated_username():
                 "username": "testUser",
                 "email": "testUsername@gmail.com",
                 "password": "password",
+                "avatar": "",
                 "passwordRepeated": "password"
             })
     assert response.status_code == 400
@@ -68,6 +70,7 @@ def test_repeated_email():
                 "username": "testEmail_2",
                 "email": "testEmail@gmail.com",
                 "password": "password",
+                "avatar": "",
                 "passwordRepeated": "password"
             })
     assert response.status_code == 400
@@ -80,6 +83,7 @@ def test_bad_password():
                 "username": "testPassword",
                 "email": "testPassword@gmail.com",
                 "password": "pass",
+                "avatar": "",
                 "passwordRepeated": "pass"
             })
     assert response.status_code == 400
