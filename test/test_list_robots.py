@@ -32,14 +32,20 @@ def test_valid_example():
         Robot(name="robot4",script="abc",user=User[1])
         Robot(name="robot5",script="abc",user=User[1])
         Robot(name="robot6",script="abc",user=User[1])
+        id1 = (Robot.get(name="robot1")).id
+        id2 = (Robot.get(name="robot2")).id
+        id3 = (Robot.get(name="robot3")).id
+        id4 = (Robot.get(name="robot4")).id
+        id5 = (Robot.get(name="robot5")).id
+        id6 = (Robot.get(name="robot6")).id
     response = client.get(
         "/robots",
         headers={"authorization": "Bearer " + encoded}
     )
     assert response.status_code ==  200
-    assert response.json() == {"robots":[{'id': 7, 'name': 'robot6'}, 
-    {'id': 6, 'name': 'robot5'}, {'id': 5, 'name': 'robot4'},
-    {'id': 4, 'name': 'robot3'}, {'id': 3, 'name': 'robot2'}, {'id': 2, 'name': 'robot1'}]}
+    assert response.json() == {"robots":[{'id': id6, 'name': 'robot6'}, 
+    {'id': id5, 'name': 'robot5'}, {'id': id4, 'name': 'robot4'},
+    {'id': id3, 'name': 'robot3'}, {'id': id2, 'name': 'robot2'}, {'id': id1, 'name': 'robot1'}]}
     with db_session:
         delete(r for r in Robot if r.name == "robot1")
         delete(r for r in Robot if r.name == "robot2")
