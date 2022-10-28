@@ -28,4 +28,19 @@ class simulationModel(BaseModel):
 
 
 @router.post("/simulation")
-async def create_simulation(param: simulationModel):
+async def create_simulation(simu: simulationModel):
+    if simu.cant_rondas <= 0 or simu.cant_rondas > 200:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="error")
+    else:
+        positions = {
+            "rondas": 
+            [
+            {
+                1: {"x": 200 , "y": 200 , "vida": 50},
+                2: {"x": 400 , "y": 400 , "vida": 30}
+            }
+            ]
+        }
+
+        return positions
