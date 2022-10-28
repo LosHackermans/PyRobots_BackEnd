@@ -21,4 +21,10 @@ $ git tag <tag_name> <commit_hash>
 	Utilizar el JIRA_CODE como prefijo para los commits
 
 
+### Instrucciones para correr el back
+- run: uvicorn app.main:app
+- test: 
+(eliminar db si existe)
+python3 montardbtest.py
+python3 -m pytest
 ------------
