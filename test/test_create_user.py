@@ -35,15 +35,18 @@ def test_create_user():
             })
     assert response.status_code == 200
     assert response.json() == {"message": "User created successfully"}
+    with db_session:
+        delete(u for u in User if u.username == "Juan8")
+
 
 def test_repeated_username():
     with db_session:
         User(
-            username = "testUser",
-            email = "testUser@gmail.com",
-            password = "testUser",
-            is_validated = False
-            )
+            username="testUser",
+            email="testUser@gmail.com",
+            password="testUser",
+            is_validated=False
+        )
     response = client.post(
         '/create_user',
         json = {
@@ -54,16 +57,20 @@ def test_repeated_username():
                 "passwordRepeated": "password"
             })
     assert response.status_code == 400
-    assert response.json() == {"detail": "User with this username already exists"} 
+    assert response.json() == {
+        "detail": "User with this username already exists"}
+    with db_session:
+        delete(u for u in User if u.username == "testUser")
+
 
 def test_repeated_email():
     with db_session:
         User(
-            username = "testEmail",
-            email = "testEmail@gmail.com",
-            password = "password",
-            is_validated = False
-            )
+            username="testEmail",
+            email="testEmail@gmail.com",
+            password="password",
+            is_validated=False
+        )
     response = client.post(
         '/create_user',
         json = {
@@ -74,7 +81,10 @@ def test_repeated_email():
                 "passwordRepeated": "password"
             })
     assert response.status_code == 400
-    assert response.json() == {"detail": "User with this email already exists"} 
+    assert response.json() == {"detail": "User with this email already exists"}
+    with db_session:
+        delete(u for u in User if u.username == "testEmail")
+
 
 def test_bad_password():
     response = client.post(
@@ -87,7 +97,9 @@ def test_bad_password():
                 "passwordRepeated": "pass"
             })
     assert response.status_code == 400
-    assert response.json() == {"detail": "The password must have a minimum of 8 characters"} 
+    assert response.json() == {
+        "detail": "The password must have a minimum of 8 characters"}
+
 
 """"
 def test_bad_repeated_password():
