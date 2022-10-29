@@ -43,4 +43,5 @@ async def list_matchs(request: Request):
             return {'error': 'Invalid X-Token header'}
         else:
             PartidasDeUsuario,PartidasParaUnirse = get_matchs(curent_user)
-            return {'matches': PartidasDeUsuario + PartidasParaUnirse}
+            return {'PartidasDeUsuario': PartidasDeUsuario,
+             "PartidasParaUnirse": PartidasParaUnirse}

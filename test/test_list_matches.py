@@ -41,8 +41,9 @@ def test_valid_example():
         headers={"authorization": "Bearer " + encoded}
     )
     assert response.status_code == 200
-    assert response.json() == {"matches": [{'id': id1, 'name': 'match1'}]
-                               + [{'id': id3, 'name': 'match3'}, {'id': id2, 'name': 'match2'}]}
+    assert response.json() == {"PartidasDeUsuario": [{'id': id1, 'name': 'match1'}],
+                               "PartidasParaUnirse": [{'id': id3, 'name': 'match3'}, 
+                               {'id': id2, 'name': 'match2'}]}
     with db_session:
         delete(m for m in Match if m.name == "match1")
         delete(m for m in Match if m.name == "match2")
