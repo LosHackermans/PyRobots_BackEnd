@@ -10,23 +10,28 @@ SECRET_KEY = "my_secret_key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 800
 
+
 def get_current_user(data):
     current_user_info = jwt.decode(data, SECRET_KEY, algorithms=ALGORITHM)
     current_user = User.get(email=current_user_info["email"])
     return current_user
 
-def get_user_robots(user):
-    list_of_robots = []
-    robots = Robot.select(lambda r: r.user == user).   order_by(
-        desc(Robot.name), Robot.id)[:]
-    for i in robots:
-        list_of_robots.append({"id": i.id, "name": i.name})
 
-    return list_of_robots
+def get_matchs(user):
+    PartidasDeUsuario = []
+    PartidasParaUnirse = []
+    matchs = Match.select() .   order_by(
+        desc(Match.name), Match.id)[:]
+    for i in matchs:
+        if i.user == user:
+            PartidasDeUsuario.append({"id": i.id, "name": i.name})
+        else:
+            PartidasParaUnirse.append({"id": i.id, "name": i.name})
+    return (PartidasDeUsuario, PartidasParaUnirse)
 
 
-@router.get("/robots")
-async def list_robots(request: Request):
+@router.get("/matches")
+async def list_matchs(request: Request):
     with db_session:
         token = request.headers.get("authorization")
         if token[0:7] != "Bearer ":
@@ -37,5 +42,5 @@ async def list_robots(request: Request):
         if curent_user == None:     # no existe el usuario en la bd
             return {'error': 'Invalid X-Token header'}
         else:
-            user_robots = get_user_robots(curent_user)
-            return {'robots':user_robots}
+            PartidasDeUsuario,PartidasParaUnirse = get_matchs(curent_user)
+            return {'matches': PartidasDeUsuario + PartidasParaUnirse}

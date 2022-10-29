@@ -1,12 +1,6 @@
-from fastapi import FastAPI, Request, HTTPException, status
-from fastapi.middleware.cors import CORSMiddleware
-import jwt
+from fastapi import FastAPI,HTTPException, status
 from pydantic import BaseModel
-import base64
 from app.api.models import *
-from fastapi.encoders import jsonable_encoder
-from typing import Optional
-import json
 from pony.orm import db_session
 from fastapi import APIRouter
 
