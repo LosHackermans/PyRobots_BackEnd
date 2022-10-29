@@ -1,7 +1,8 @@
 from fastapi.testclient import TestClient
-from app.main import app
+from app.main import *
 import jwt
-
+from pony.orm import db_session
+from app.api.models import *
 
 client = TestClient(app)
 
@@ -23,32 +24,50 @@ encoded2 = encoded_jwt2.decode("utf-8")
 
 
 # test create match
-def test_create_item3():
+def test_create_match():
+    with db_session:
+        Robot(name="robot", script="abc", user=User[1])
+        id = (Robot.get(name="robot")).id
     response = client.post(
         "/create_match",
         headers={"authorization": "Bearer " + encoded},
-        json = {"name": "example", "number_of_rounds": 200, "number_of_games": 100, 
-        "min_players": 2, "max_players": 4, "password": "add","id_robot": 1}
+        json={"name": "example", "number_of_rounds": 200, "number_of_games": 100,
+              "min_players": 2, "max_players": 4, "password": "add", "id_robot": id}
     )
     assert response.status_code == 200
-    
-def test_bad_create_item3():
+    with db_session:
+        delete(r for r in Robot if r.name == "robot")
+        delete(m for m in Match if m.name == "example")
+
+
+def test_invalid_games():
     response = client.post(
         "/create_match",
         headers={"authorization": "Bearer " + encoded},
-        json = {"name": "example", "number_of_rounds": 200, "number_of_games": 500, 
-        "min_players": 2, "max_players": 4,"password": "add", "id_robot": 1}
+        json={"name": "example", "number_of_rounds": 200, "number_of_games": 500,
+              "min_players": 2, "max_players": 4, "password": "add", "id_robot": 1}
     )
-    assert response.status_code == 200    
+    assert response.status_code == 200
     assert response.json() == {'error': 'number of games invalid'}
 
-def test_read_item_bad_token3():
+
+def test_invalid_token():
     response = client.post(
         "/create_match",
         headers={"authorization": "Bearer " + encoded2},
-        json = {"name": "example", "number_of_rounds": 200, "number_of_games": 100, 
-        "min_players": 2, "max_players": 4, "password": "add", "id_robot": 1}
+        json={"name": "example", "number_of_rounds": 200, "number_of_games": 100,
+              "min_players": 2, "max_players": 4, "password": "add", "id_robot": 1}
     )
     assert response.status_code == 200
     assert response.json() == {"error": "Invalid X-Token header"}
 
+
+def test_invalid_header():
+    response = client.post(
+        "/create_match",
+        headers={"authorization": encoded},
+        json={"name": "example", "number_of_rounds": 200, "number_of_games": 100,
+              "min_players": 2, "max_players": 4, "password": "add", "id_robot": 1}
+    )
+    assert response.status_code == 200
+    assert response.json() == {"error": "Invalid header"}
