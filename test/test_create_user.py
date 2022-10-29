@@ -26,12 +26,13 @@ encoded2 = encoded_jwt2.decode("utf-8")
 def test_create_user():
     response = client.post(
         '/create_user',
-        json={
-            "username": "Juan8",
-            "email": "juanpereez@gmail.com",
-            "password": "password"
-            # "passwordRepeated": "password"
-        })
+        json = {
+                "username": "Juan8",
+                "email": "juanpereez@gmail.co8",
+                "password": "password",
+                "avatar": "asdasd"
+                #"passwordRepeated": "password"
+            })
     assert response.status_code == 200
     assert response.json() == {"message": "User created successfully"}
     with db_session:
@@ -48,12 +49,13 @@ def test_repeated_username():
         )
     response = client.post(
         '/create_user',
-        json={
-            "username": "testUser",
-            "email": "testUsername@gmail.com",
-            "password": "password",
-            "passwordRepeated": "password"
-        })
+        json = {
+                "username": "testUser",
+                "email": "testUsername@gmail.com",
+                "password": "password",
+                "avatar": "",
+                "passwordRepeated": "password"
+            })
     assert response.status_code == 400
     assert response.json() == {
         "detail": "User with this username already exists"}
@@ -71,12 +73,13 @@ def test_repeated_email():
         )
     response = client.post(
         '/create_user',
-        json={
-            "username": "testEmail_2",
-            "email": "testEmail@gmail.com",
-            "password": "password",
-            "passwordRepeated": "password"
-        })
+        json = {
+                "username": "testEmail_2",
+                "email": "testEmail@gmail.com",
+                "password": "password",
+                "avatar": "",
+                "passwordRepeated": "password"
+            })
     assert response.status_code == 400
     assert response.json() == {"detail": "User with this email already exists"}
     with db_session:
@@ -86,12 +89,13 @@ def test_repeated_email():
 def test_bad_password():
     response = client.post(
         '/create_user',
-        json={
-            "username": "testPassword",
-            "email": "testPassword@gmail.com",
-            "password": "pass",
-            "passwordRepeated": "pass"
-        })
+        json = {
+                "username": "testPassword",
+                "email": "testPassword@gmail.com",
+                "password": "pass",
+                "avatar": "",
+                "passwordRepeated": "pass"
+            })
     assert response.status_code == 400
     assert response.json() == {
         "detail": "The password must have a minimum of 8 characters"}

@@ -16,7 +16,7 @@ class signUpModel(BaseModel):
     username: str
     email: str
     password: str
-    # avatar: Optional[str]
+    avatar: str
 
     class Config:
         schema_extra = {
@@ -51,6 +51,7 @@ async def signup(user: signUpModel):
             username=user.username,
             email=user.email,
             password=user.password,
+            avatar=user.avatar,
             is_validated=False
         )
 
