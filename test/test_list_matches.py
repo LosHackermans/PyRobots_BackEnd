@@ -42,12 +42,46 @@ def test_valid_example():
     )
     assert response.status_code == 200
     assert response.json() == {"PartidasDeUsuario": [{'id': id1, 'name': 'match1'}],
-                               "PartidasParaUnirse": [{'id': id3, 'name': 'match3'}, 
-                               {'id': id2, 'name': 'match2'}]}
+                               "PartidasParaUnirse": [{'id': id3, 'name': 'match3'},
+                                                      {'id': id2, 'name': 'match2'}],
+                               "PartidasUnidas": []}
     with db_session:
         delete(m for m in Match if m.name == "match1")
         delete(m for m in Match if m.name == "match2")
         delete(m for m in Match if m.name == "match3")
+        delete(u for u in User if u.username == "ej")
+
+
+def test_full_valid_example():
+    with db_session:
+        User(username="ej", email="pepito@gmail.com",
+             password="abc", is_validated=True)
+        Robot(name="robot", script="abc", user=User[1])
+        Match(name="match1", min_players=2, max_players=4,
+              number_rounds=200, number_games=200, is_joinable=True, user=User[1])
+        Match(name="match2", min_players=2, max_players=4,
+              number_rounds=200, number_games=200, is_joinable=True, user=User.get(username="ej"))
+        Match(name="match3", min_players=2, max_players=4,
+              number_rounds=200, number_games=200, is_joinable=True, user=User.get(username="ej"))
+        Robot_in_match(robot=Robot.get(name="robot"),
+                       games_won=2, games_draw=2, match= Match.get(name="match2"))
+        id1 = (Match.get(name="match1")).id
+        id2 = (Match.get(name="match2")).id
+        id3 = (Match.get(name="match3")).id
+    response = client.get(
+        "/matches",
+        headers={"authorization": "Bearer " + encoded}
+    )
+    assert response.status_code == 200
+    assert response.json() == {"PartidasDeUsuario": [{'id': id1, 'name': 'match1'}],
+                               "PartidasParaUnirse": [{'id': id3, 'name': 'match3'}],
+                               "PartidasUnidas": [{'id': id2, 'name': 'match2'}]}
+    with db_session:
+        delete(m for m in Match if m.name == "match1")
+        delete(m for m in Match if m.name == "match2")
+        delete(m for m in Match if m.name == "match3")
+        delete(r for r in Robot if r.name == "robot")
+        delete(r for r in Robot_in_match if r.games_won == 2)
         delete(u for u in User if u.username == "ej")
 
 
