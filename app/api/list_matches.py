@@ -18,9 +18,9 @@ def get_current_user(data):
 
 
 def get_matchs(user):
-    PartidasDeUsuario = []
-    PartidasParaUnirse = []
-    PartidasUnidas = []
+    User_Games = []
+    Games_To_Join = []
+    Games_already_join = []
     matchs = Match.select() .   order_by(
         desc(Match.name), Match.id)[:]
     
@@ -28,17 +28,17 @@ def get_matchs(user):
         if i.is_joinable:   # si la partida esta llena, o ya comenzo esta variable es false
         
             if i.user == user:
-                PartidasDeUsuario.append({"id": i.id, "name": i.name})
+                User_Games.append({"id": i.id, "name": i.name})
             else:
                 esta_unido = False
                 for j in i.robot_in_matches:
                     for h in user.robots:
                         if j.robot == h and i.user != user:
-                            PartidasUnidas.append({"id": i.id, "name": i.name})
+                            Games_already_join.append({"id": i.id, "name": i.name})
                             esta_unido = True
                 if not esta_unido:       
-                    PartidasParaUnirse.append({"id": i.id, "name": i.name})
-    return (PartidasDeUsuario, PartidasParaUnirse, PartidasUnidas)
+                    Games_To_Join.append({"id": i.id, "name": i.name})
+    return (User_Games, Games_To_Join, Games_already_join)
 
 
 @router.get("/matches")
@@ -53,7 +53,7 @@ async def list_matches(request: Request):
         if curent_user == None:     # no existe el usuario en la bd
             return {'error': 'Invalid X-Token header'}
         else:
-            PartidasDeUsuario,PartidasParaUnirse,PartidasUnidas = get_matchs(curent_user)
-            return {'PartidasDeUsuario': PartidasDeUsuario,
-             "PartidasParaUnirse": PartidasParaUnirse,
-             "PartidasUnidas":PartidasUnidas}
+            User_Games,Games_To_Join,Games_already_join = get_matchs(curent_user)
+            return {'User_Games': User_Games,
+             "Games_To_Join": Games_To_Join,
+             "Games_already_join":Games_already_join}
