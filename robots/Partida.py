@@ -2,7 +2,7 @@ from time import sleep
 from Map import Map
 import SuperMegaRobot as smr
 
-class Partida():
+class Partida:
     
 
     def __init__(self):
