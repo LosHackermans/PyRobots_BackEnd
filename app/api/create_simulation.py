@@ -15,13 +15,13 @@ router = APIRouter()
 
 class simulationModel(BaseModel):
     robots: list
-    cant_rondas: int
+    rounds: int
 
     class Config:
         schema_extra = {
             'example': {
                 "robots": [1,2,3],
-                "cant_rondas": 200,
+                "rounds": 200,
             }
         }
 
@@ -29,18 +29,37 @@ class simulationModel(BaseModel):
 
 @router.post("/simulation")
 async def create_simulation(simu: simulationModel):
-    if simu.cant_rondas <= 0 or simu.cant_rondas > 200:
+    if simu.rounds <= 0 or simu.rounds > 200:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                 detail="error")
     else:
+        list_of_robots = simu.robots
+        number_of_robots = len(list_of_robots)
+        number_of_rounds = simu.rounds
+        
+        dictionary = {}
+        list_of_rounds = []
+
+        for i in range(number_of_rounds):
+            for j in range(number_of_robots):
+                
+                current_robot = list_of_robots[j]
+                #######################################
+                #obtener robot y sus datos de j-esimo robot
+                #Hardcode data
+                x_position = 3
+                y_position = 4
+                robot_life = 50
+                #####################################################
+
+                dictionary[j+1] = {"x": x_position, "y": y_position, "life": robot_life}
+
+            list_of_robots.append(dictionary)
+            dictionary = {}
+
+
         positions = {
-            "rondas": 
-            [
-            {
-                1: {"x": 200 , "y": 200 , "vida": 50},
-                2: {"x": 400 , "y": 400 , "vida": 30}
-            }
-            ]
+            "rounds": list_of_rounds
         }
 
         return positions
