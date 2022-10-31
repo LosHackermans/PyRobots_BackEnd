@@ -45,10 +45,10 @@ async def create_simulation(simu: simulationModel):
                 
                 current_robot = list_of_robots[j]
                 #######################################
-                #obtener robot y sus datos de j-esimo robot
+                #Falta obtener robot y sus datos del j-esimo robot
                 #Hardcode data
-                x_position = 3
-                y_position = 4
+                x_position = 300
+                y_position = 450
                 robot_life = 50
                 #####################################################
 
