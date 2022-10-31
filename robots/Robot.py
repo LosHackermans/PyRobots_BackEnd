@@ -28,7 +28,7 @@ class Robot():
         self.data["cannon"] = False
 
     def __es_numero(a):
-        return type(a) == int or type(a) == float
+        return (type(a) == int or type(a) == float) and a >= 0
 
 #funciones publicas
     def is_cannon_ready(self):
@@ -36,13 +36,13 @@ class Robot():
     
     def cannon(self, degree, distance):
         #print("llamada a cannon(%s, %s)" % (degree, distance))
-        if __es_numero(degree) and __es_numero(distance):
+        if __es_numero(degree) and __es_numero(distance) and degree < 360 and distance < 700:
             self.data["cannon_degree"] = degree
             self.data["cannon_distance"] = distance
         
     def point_scanner(self, direction, resolution):
         #print("llamada a point_scanner(%s, %s)" % (direction, resolution_in_degrees))
-        if __es_numero(direction) and __es_numero(resolution):
+        if __es_numero(direction) and __es_numero(resolution) and direction < 360 and resolution <= 10:
             self.data["scanner_direction"] = direction
             self.data["scanner_resolution"] = resolution
         
@@ -51,7 +51,7 @@ class Robot():
         
     def drive(self, direction, velocity):
         #print("llamada a drive(%s, %s)" % (direction, velocity))
-        if __es_numero(direction) and __es_numero(velocity):
+        if __es_numero(direction) and __es_numero(velocity) and direction < 360 and velocity <= 100:
             self.data["direction"] = direction
             self.data["velocity"] = velocity
         
