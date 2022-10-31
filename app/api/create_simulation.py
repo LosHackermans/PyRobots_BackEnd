@@ -37,25 +37,26 @@ async def create_simulation(simu: simulationModel):
         number_of_robots = len(list_of_robots)
         number_of_rounds = simu.rounds
         
-        dictionary = {}
         list_of_rounds = []
+
+        x_position = 50
+        y_position = 100
+        robot_life = 1
+
 
         for i in range(number_of_rounds):
             for j in range(number_of_robots):
                 
                 current_robot = list_of_robots[j]
                 #######################################
-                #Falta obtener robot y sus datos del j-esimo robot
+                #Falta obtener robot y los datos del j-esimo robot
                 #Hardcode data
-                x_position = 300
-                y_position = 450
-                robot_life = 50
+                x_position += 3
+                y_position += 2
+                robot_life += 0.5
                 #####################################################
 
-                dictionary[j+1] = {"x": x_position, "y": y_position, "life": robot_life}
-
-            list_of_robots.append(dictionary)
-            dictionary = {}
+                list_of_rounds.append({"id" :current_robot, "x": x_position, "y": y_position, "life": robot_life})
 
 
         positions = {

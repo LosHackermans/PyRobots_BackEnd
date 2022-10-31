@@ -35,4 +35,4 @@ def test_create_raw_simulation():
     )
 
     assert response.status_code == 200
-    #assert response.json() == {"detail": "error"}
+    #assert response.json() == 
