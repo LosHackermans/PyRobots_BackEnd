@@ -32,7 +32,7 @@ class Match(db.Entity):
     number_games = Required(int)
     is_joinable = Required(bool)
     password = Optional(str)
-    user = Required(User)
+    user = Required(User)   #quien la creo
     robot_in_matches = Set('Robot_in_match')
 
 

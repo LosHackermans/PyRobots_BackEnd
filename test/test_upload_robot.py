@@ -4,7 +4,6 @@ import jwt
 from pony.orm import db_session
 from app.api.models import *
 
-
 client = TestClient(app)
 
 SECRET_KEY = "my_secret_key"

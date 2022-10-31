@@ -2,7 +2,6 @@ from fastapi.testclient import TestClient
 from app.main import *
 import jwt
 
-
 client = TestClient(app)
 
 SECRET_KEY = "my_secret_key"
