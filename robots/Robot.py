@@ -9,6 +9,7 @@ class Robot:
             self.data["pos_x"] = 0
             self.data["pos_y"] = 0
         self.data["health"] = 100
+        self.data["alive"] = True
         self.data["direction"] = 0
         self.data["velocity"] = 0
         self.data["cannon_ready"] = True
@@ -17,6 +18,7 @@ class Robot:
         self.data["scanner_direction"] = 0
         self.data["scanner_resolution"] = 0
         self.data["scanned"] = 0
+        self.data["intends_to_shoot"] = False
         
         
     def get_data(self):
@@ -32,6 +34,14 @@ class Robot:
             self.data["cannon_ready"] = False
         return was_ready
         
+    def set_position(self, x, y):
+        self.data["pos_x"] = x
+        self.data["pos_y"] = y
+
+    def receive_damage(self, dmg):
+        self.data["health"] -= dmg
+        if self.data["health"] <= 0:
+            self.data["alive"] = False
 
     def __es_numero(self, a):
         return (type(a) == int or type(a) == float) and a >= 0
@@ -41,7 +51,8 @@ class Robot:
         if self.__es_numero(degree) and self.__es_numero(distance) and degree < 360 and distance < 700:
             self.data["cannon_degree"] = degree
             self.data["cannon_distance"] = distance
-            
+            self.data["intends_to_shoot"] = True
+
     def is_cannon_ready(self):
         return self.data["cannon_ready"]
     

@@ -5,10 +5,8 @@ class SuperMegaRobot(Robot.Robot):
     def initialize(self):
         super().is_cannon_ready()
         super().get_position()
-        print("SuperMegaBot ready!")
         
     def respond(self):
-        print("SuperMegaBot respond!")
         super().is_cannon_ready()
         
         super().cannon(100, 50)
