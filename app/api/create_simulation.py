@@ -63,6 +63,7 @@ async def create_simulation(simu: simulationModel):
                 
             positions_in_round = {"robots": list_of_this_round, "missiles": [ { } ]}
             list_of_rounds.append(positions_in_round)
+            list_of_this_rounds = []
             
 
 
