@@ -1,8 +1,8 @@
 from fastapi.testclient import TestClient
 from app.main import *
 import jwt
-from fastapi.encoders import jsonable_encoder
-
+from pony.orm import db_session
+from app.api.models import *
 
 client = TestClient(app)
 
@@ -23,25 +23,47 @@ encoded_jwt2 = jwt.encode(dummy_user2, SECRET_KEY, algorithm=ALGORITHM)
 encoded2 = encoded_jwt2.decode("utf-8")
 
 
-#test upload robot
-def test_read_main():
+# test upload robot
+def test_create_robot():
     response = client.post(
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded},
-        json = {"name": "example", "script": "acd"}
+        json={"name": "exist", "avatar": "", "script": "acd"}
     )
     assert response.status_code == 200
-    assert response.json() == {'detail':"Robot created"}
+    assert response.json() == {'detail': "Robot created"}
 
-def test_bad_create_item():
+
+def test_create_robot_with_avatar():
+    response = client.post(
+        "/upload_robot",
+        headers={"authorization": "Bearer " + encoded},
+        json={"name": "example_with_avatar",
+              "avatar": "avatarpng", "script": "acd"}
+    )
+    assert response.status_code == 200
+    assert response.json() == {'detail': "Robot created"}
+    with db_session:
+        delete(r for r in Robot if r.name == "example_with_avatar")
+
+
+def test_invalid_token():
     response = client.post(
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded2},
-        json = {"name": "example", "script": "acd"}
+        json={"name": "example2", "avatar": "", "script": "acd"}
     )
-    assert response.status_code == 200    
+    assert response.status_code == 200
     assert response.json() == {'error': 'Invalid X-Token header'}
 
-data = jsonable_encoder(dummy_user)
-encoded_jwt = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
-encoded = encoded_jwt.decode("utf-8")
+
+def test_create_bot_same_name():
+    response = client.post(
+        "/upload_robot",
+        headers={"authorization": "Bearer " + encoded},
+        json={"name": "exist", "avatar": "", "script": "acd"}
+    )
+    assert response.status_code == 400
+    assert response.json() == {'detail': "robot with this name already exists"}
+    with db_session:
+        delete(r for r in Robot if r.name == "exist")
