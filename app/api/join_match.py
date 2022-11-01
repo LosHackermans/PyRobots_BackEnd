@@ -8,12 +8,13 @@ import jwt
 from pydantic import BaseModel
 import base64
 from app.api.models import *
-# from models import *
 from fastapi.encoders import jsonable_encoder
 from typing import Optional
 import json
 from pony.orm import db_session
 from fastapi import APIRouter
+
+
 
 router = APIRouter()
 
@@ -49,6 +50,7 @@ async def join_match(match: JoinMatchModel):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                 detail="Unable to join match")
 
+
         current_robot = Robot.get(id = match.id_robot)
         if current_robot == None:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
@@ -56,11 +58,13 @@ async def join_match(match: JoinMatchModel):
 
         Robot_in_match(robot = current_robot, games_won = 0, games_draw = 0, match = current_match)
 
-        # NOTE: No puedo obtener la cantidad de usuarios para actualizar el campo is_joinable
-        # number_of_robots =  select(r for r in Robot_in_match if r.match == current_match)
-        # if len(number_of_robots) >= current_match.max_players:
-        #     current_match.is_joinable = False
+
+        number_of_robots =  current_match.robot_in_matches.count() + 1
+        if number_of_robots == current_match.max_players:
+            current_match.is_joinable = False
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="The match exceed the maximum number of players")
+                    
         
     return {"message": "User joined successfully"}
-
 
