@@ -38,7 +38,7 @@ async def create_simulation(simu: simulationModel):
         number_of_rounds = simu.rounds
         
         list_of_rounds = []
-
+     
         x_position = 50
         y_position = 100
         robot_life = 1
@@ -48,15 +48,22 @@ async def create_simulation(simu: simulationModel):
             for j in range(number_of_robots):
                 
                 current_robot = list_of_robots[j]
+                
+                list_of_this_round = []
+               
                 #######################################
                 #Falta obtener robot y los datos del j-esimo robot
                 #Hardcode data
-                x_position += 3
-                y_position += 2
-                robot_life += 0.5
+                x_position += 50
+                y_position += 20
+                robot_life += 0.25
                 #####################################################
 
-                list_of_rounds.append({"id" :current_robot, "x": x_position, "y": y_position, "life": robot_life})
+                list_of_this_round.append({"id" :current_robot, "x": x_position, "y": y_position, "life": robot_life})
+                
+            positions_in_round = {"robots": list_of_this_round, "missiles": [ { } ]}
+            list_of_rounds.append(positions_in_round)
+            
 
 
         positions = {
