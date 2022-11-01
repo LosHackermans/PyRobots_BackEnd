@@ -1,5 +1,3 @@
-from Map import Map
-
 class Robot:
 #Funciones auxiliares, el usuario no las conoce    
     def __init__(self, pos_x: int, pos_y: int):
