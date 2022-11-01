@@ -3,18 +3,9 @@ import jwt
 from app.api.models import *
 from pony.orm import db_session
 from fastapi import APIRouter
+from app.get_user import *
 
 router = APIRouter()
-
-SECRET_KEY = "my_secret_key"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 800
-
-
-def get_current_user(data):
-    current_user_info = jwt.decode(data, SECRET_KEY, algorithms=ALGORITHM)
-    current_user = User.get(email=current_user_info["email"])
-    return current_user
 
 
 def get_matchs(user):
@@ -44,13 +35,8 @@ def get_matchs(user):
 @router.get("/matches")
 async def list_matches(request: Request):
     with db_session:
-        token = request.headers.get("authorization")
-        if token[0:7] != "Bearer ":
-            return {'error': 'Invalid header'}
-        else:
-            token = token[7:]
-        curent_user = get_current_user(token)
-        if curent_user == None:     # no existe el usuario en la bd
+        curent_user = get_user(request.headers)
+        if curent_user == None:     # no existe el usuario en la bd o no hay header
             return {'error': 'Invalid X-Token header'}
         else:
             User_Games,Games_To_Join,Games_already_join = get_matchs(curent_user)

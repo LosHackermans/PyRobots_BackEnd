@@ -1,6 +1,5 @@
 from fastapi.testclient import TestClient
-from app.main import *
-import jwt
+from app.main import app
 from pony.orm import db_session
 from app.api.models import *
 client = TestClient(app)

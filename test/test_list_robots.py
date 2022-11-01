@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from app.main import *
+from app.main import app
 import jwt
 from pony.orm import db_session
 from app.api.models import *
@@ -23,16 +23,17 @@ encoded_jwt2 = jwt.encode(dummy_user2, SECRET_KEY, algorithm=ALGORITHM)
 encoded2 = encoded_jwt2.decode("utf-8")
 
 
-
 #test
 def test_valid_example():
     with db_session:
-        Robot(name="robot1",script="abc",user=User[1])
-        Robot(name="robot2",script="abc",user=User[1])
-        Robot(name="robot3",script="abc",user=User[1])
-        Robot(name="robot4",script="abc",user=User[1])
-        Robot(name="robot5",script="abc",user=User[1])
-        Robot(name="robot6",script="abc",user=User[1])
+        User(username = "pedro", email = "famaf01@gmail.com",
+             password = "nuevofamaf", is_validated = True)
+        Robot(name="robot1",script="abc",user=User.get(email = "famaf01@gmail.com"))
+        Robot(name="robot2",script="abc",user=User.get(email = "famaf01@gmail.com"))
+        Robot(name="robot3",script="abc",user=User.get(email = "famaf01@gmail.com"))
+        Robot(name="robot4",script="abc",user=User.get(email = "famaf01@gmail.com"))
+        Robot(name="robot5",script="abc",user=User.get(email = "famaf01@gmail.com"))
+        Robot(name="robot6",script="abc",user=User.get(email = "famaf01@gmail.com"))
         id1 = (Robot.get(name="robot1")).id
         id2 = (Robot.get(name="robot2")).id
         id3 = (Robot.get(name="robot3")).id
@@ -54,6 +55,7 @@ def test_valid_example():
         delete(r for r in Robot if r.name == "robot4")
         delete(r for r in Robot if r.name == "robot5")
         delete(r for r in Robot if r.name == "robot6")
+        delete (u for u in User if u.email == "famaf01@gmail.com")
 
 
 def test_invalid_token():
@@ -70,4 +72,4 @@ def test_invalid_header():
         headers={"authorization": encoded}
     )
     assert response.status_code == 200
-    assert response.json() == {'error': 'Invalid header'}
+    assert response.json() == {'error': 'Invalid X-Token header'}
