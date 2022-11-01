@@ -67,3 +67,12 @@ def test_create_bot_same_name():
     assert response.json() == {'detail': "robot with this name already exists"}
     with db_session:
         delete(r for r in Robot if r.name == "exist")
+
+def test_invalid_header():
+    response = client.post(
+        "/upload_robot",
+        headers={"authorization": encoded},
+        json={"name": "example2", "avatar": "", "script": "acd"}
+        )
+    assert response.status_code == 200
+    assert response.json() == {"error": "Invalid header"}

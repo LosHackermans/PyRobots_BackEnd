@@ -28,7 +28,6 @@ async def login_user(login_item: LoginItem):
                 return {'token': encoded_jwt}
             else:
                 return {'error': ' incorrect Password'}
-        elif not(User.exists(email=data["email"])):
+        if not(User.exists(email=data["email"])):
             return {'error': 'User not exist'}
-        else:
-            return {'error': 'Login failed'}
+

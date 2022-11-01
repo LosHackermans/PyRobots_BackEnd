@@ -50,6 +50,26 @@ def test_invalid_games():
     assert response.status_code == 200
     assert response.json() == {'error': 'number of games invalid'}
 
+def test_invalid_players():
+    response = client.post(
+        "/create_match",
+        headers={"authorization": "Bearer " + encoded},
+        json={"name": "example", "number_of_rounds": 200, "number_of_games": 100,
+        "min_players": 2, "max_players": 10, "password": "add", "id_robot": 1}
+        )
+    assert response.status_code == 200
+    assert response.json() == {'error': 'number of players invalid'}
+
+def test_invalid_rounds():
+    response = client.post(
+        "/create_match",
+        headers={"authorization": "Bearer " + encoded},
+        json={"name": "example", "number_of_rounds": -200, "number_of_games": 100,
+        "min_players": 2, "max_players": 4, "password": "add", "id_robot": 1}
+        )
+    assert response.status_code == 200
+    assert response.json() == {'error': 'number of rounds invalid'}
+
 
 def test_invalid_token():
     response = client.post(

@@ -51,11 +51,9 @@ async def user_creatematch(body: BodyMatch, request: Request):
                           number_games=body.number_of_games, is_joinable=True,
                           password=body.password,
                           user=curent_user)
+                          
+            Robot_in_match(robot=Robot[body.id_robot], games_won=0,
+                            games_draw=0, match=Match[match.id])
             commit()
-            if match.id != None:
-                Robot_in_match(robot=Robot[body.id_robot], games_won=0,
-                               games_draw=0, match=Match[match.id])
-                commit()
-                return {'match_id': match.id}
-            else:
-                return {'error': 'Create match failed'}
+            return {'match_id': match.id}
+    
