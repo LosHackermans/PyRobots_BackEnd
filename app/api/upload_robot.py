@@ -40,7 +40,4 @@ async def user_create_bot(body: Body, request: Request):
         robot = Robot(name=body.name, avatar = body.avatar, script=body.script,
                       user=curent_user)
         commit()
-        if robot.id != None:
-            return {'detail': "Robot created"}
-        else:
-            return {'error': 'Create robot failed'}
+        return {'detail': "Robot created"}

@@ -36,3 +36,11 @@ def test_incorrect_password():
     )
     assert response.status_code == 200
     assert response.json() == {'error': ' incorrect Password'}
+
+def test_user_not_exist():
+    response = client.post(
+        "/login",
+        json ={"email": 'famaf@gmail.com', "password": "asd"}
+        )
+    assert response.status_code == 200
+    assert response.json() == {'error': 'User not exist'}
