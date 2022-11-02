@@ -3,6 +3,7 @@ from Robot import *
 from Missile import Missile
 from random import randrange
 from math import cos, sin, pi
+from GameState import *
 
 bots_hardcodeados = ["CircleBot.py", "SquareBot.py", "SuperMegaRobot.py"]
 MAX_SPEED = 100
@@ -15,7 +16,7 @@ def to_rads(x):
 create_bot_string = """
 from Robot import *
 from {} import *
-self.bot = {}({}, {})
+self.bot = {}({}, {}, {})
 """
 
 class Juego:
@@ -23,15 +24,17 @@ class Juego:
     def __init__(self, bot_list):
         self.bot_list = bot_list
         self.missiles = []
+        self.game_state = GameState()
         self.instantiate_bots()
         self.initialize_bots()
         self.run_game()
+        print(self.game_state.produce_final_json())
         
     def instantiate_bots(self):
         self.robots = []
         for botname in self.bot_list:
             spawn = (randrange(0, 1000, 20), randrange(0, 1000, 20))
-            exec(create_bot_string.format(botname[:-3], botname[:-3], spawn[0], spawn[1]))
+            exec(create_bot_string.format(botname[:-3], botname[:-3], botname[:-3], spawn[0], spawn[1]))
             self.robots.append(self.bot)
             print(self.bot.get_position())
         
@@ -40,7 +43,7 @@ class Juego:
             bot.initialize()
     
     def run_game(self):
-        for i in range(5):
+        for i in range(4):
             self.respond_bots()
             self.move_bots()
             self.update_scanners()
@@ -103,6 +106,26 @@ class Juego:
         
     def record_game_state(self):
         print("--------RECORD GAME STATE")
+        state_string = "{\n\trobots: [\n"
+        for bot in self.robots:
+            #state_string = f"\t\t\{ id: a, x: {bot.get_position()[0]}, y: {bot.get_position()[1]}, life: {100 - bot.get_damage()}\},\n"
+            #state_string += "\t],\n\tmissiles: [\n"
+            self.game_state.add_bot("COSO", bot.get_position(), 100 - bot.get_damage())
+        for missile in self.missiles:
+            #state_string += f"\t\t\{ x: {missile.get_position()[0]}, y: {missile.get_position()[1]}\},\n"
+            self.game_state.add_missile(missile.get_position(), missile.is_exploded())
+        
+        self.game_state.commit_game_state()
+        
+        #{
+        #    robots: [
+        #        { id: , x: , y: , life:},
+        #        { id: , x: , y: , life:}
+        #    ],
+        #    missiles: [
+        #        { por ahora viene vació, queda a definir }
+        #    ]
+        #}
         
 
 if __name__ == "__main__":

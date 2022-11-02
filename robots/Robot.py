@@ -1,7 +1,8 @@
 class Robot:
 #Funciones auxiliares, el usuario no las conoce    
-    def __init__(self, pos_x: int, pos_y: int):
+    def __init__(self, bot_id, pos_x, pos_y):
         self.data = {}
+        self.data["bot_id"] = bot_id
         if self.__es_numero(pos_x) and self.__es_numero(pos_y):
             self.data["pos_x"] = pos_x
             self.data["pos_y"] = pos_y
@@ -20,6 +21,8 @@ class Robot:
         self.data["scanned"] = 0
         self.data["intends_to_shoot"] = False
         
+    def get_id(self):
+        return self.data["bot_id"]
         
     def get_data(self):
         return self.data

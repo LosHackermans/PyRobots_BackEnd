@@ -36,3 +36,9 @@ class Missile:
         print(f"{self.pos} ----->> ({next_x}, {next_y})")
         self.pos = (next_x, next_y)
         return (self.exploded, self.pos[0], self.pos[1])
+
+    def get_position(self):
+        return self.pos
+
+    def is_exploded(self):
+        return self.exploded
