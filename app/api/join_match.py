@@ -59,12 +59,10 @@ async def join_match(match: JoinMatchModel):
         Robot_in_match(robot = current_robot, games_won = 0, games_draw = 0, match = current_match)
 
 
-        number_of_robots =  current_match.robot_in_matches.count() + 1
+        number_of_robots =  current_match.robot_in_matches.count()
+        print(number_of_robots)
         if number_of_robots == current_match.max_players:
             current_match.is_joinable = False
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                                detail="The match exceed the maximum number of players")
-                    
-        
+
     return {"message": "User joined successfully"}
 

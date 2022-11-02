@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from app.main import *
+from app.main import app
 import jwt
 from pony.orm import db_session
 from app.api.models import *
@@ -25,54 +25,65 @@ encoded2 = encoded_jwt2.decode("utf-8")
 
 # test upload robot
 def test_create_robot():
+    with db_session:
+        User(username = "pedro", email = "famaf01@gmail.com", password = "nuevofamaf", is_validated = True)
     response = client.post(
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded},
-        json={"name": "exist", "avatar": "", "script": "acd"}
+        json={"name": "exist", "avatar": "", "script": "acd" , "fileName": "acd"}
     )
     assert response.status_code == 200
     assert response.json() == {'detail': "Robot created"}
-
+    with db_session:
+         delete (u for u in User if u.email == "famaf01@gmail.com")
+         delete(r for r in Robot if r.name == "exist")
 
 def test_create_robot_with_avatar():
+    with db_session:
+        User(username = "pedro", email = "famaf01@gmail.com", password = "nuevofamaf", is_validated = True)
     response = client.post(
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded},
         json={"name": "example_with_avatar",
-              "avatar": "avatarpng", "script": "acd"}
+              "avatar": "avatarpng", "script": "acd", "fileName": "acd"}
     )
     assert response.status_code == 200
     assert response.json() == {'detail': "Robot created"}
     with db_session:
         delete(r for r in Robot if r.name == "example_with_avatar")
+        delete (u for u in User if u.email == "famaf01@gmail.com")
 
 
 def test_invalid_token():
     response = client.post(
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded2},
-        json={"name": "example2", "avatar": "", "script": "acd"}
+        json={"name": "example2", "avatar": "", "script": "acd", "fileName": "acd"}
     )
     assert response.status_code == 200
     assert response.json() == {'error': 'Invalid X-Token header'}
 
 
 def test_create_bot_same_name():
+    with db_session:
+        User(username = "pedro", email = "famaf01@gmail.com", password = "nuevofamaf", is_validated = True)
+        Robot(name="exist", script="abc", user=User.get(email = "famaf01@gmail.com"))
     response = client.post(
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded},
-        json={"name": "exist", "avatar": "", "script": "acd"}
+        json={"name": "exist", "avatar": "", "script": "acd", "fileName": "acd"}
     )
     assert response.status_code == 400
     assert response.json() == {'detail': "robot with this name already exists"}
     with db_session:
         delete(r for r in Robot if r.name == "exist")
+        delete (u for u in User if u.email == "famaf01@gmail.com")
 
 def test_invalid_header():
     response = client.post(
         "/upload_robot",
         headers={"authorization": encoded},
-        json={"name": "example2", "avatar": "", "script": "acd"}
+        json={"name": "example2", "avatar": "", "script": "acd", "fileName": "acd"}
         )
     assert response.status_code == 200
-    assert response.json() == {"error": "Invalid header"}
+    assert response.json() == {'error': 'Invalid X-Token header'}

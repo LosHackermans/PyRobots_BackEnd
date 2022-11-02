@@ -4,40 +4,44 @@ from pydantic import BaseModel
 from app.api.models import *
 from pony.orm import db_session
 from fastapi import APIRouter
+from app.get_user import *
+import os
 
 router = APIRouter()
-SECRET_KEY = "my_secret_key"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 800
+
 
 class Body(BaseModel):
     name: str
-    avatar: str        
+    avatar: str
     script: str
+    fileName: str
 
-
-def get_current_user(data):
-    current_user_info = jwt.decode(data, SECRET_KEY, algorithms=ALGORITHM)
-    current_user = User.get(email=current_user_info["email"])
-    return current_user
 
 @router.post("/upload_robot")
 async def user_create_bot(body: Body, request: Request):
     with db_session:
-        token = request.headers.get("authorization")
-        print(request.headers)
-        if token[0:7] != "Bearer ":
-            return {'error': 'Invalid header'}
-        else:
-            token = token[7:]
-        curent_user = get_current_user(token)
-        if curent_user == None:     # no existe el usuario en la bd
+        curent_user = get_user(request.headers)
+        if curent_user == None:     # no existe el usuario en la bd o no hay header
             return {'error': 'Invalid X-Token header'}
         user_has_bot_already = select(r.name for r in User[curent_user.id].robots if (r.name == body.name))
         if len(user_has_bot_already) > 0: 
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                 detail="robot with this name already exists")
-        robot = Robot(name=body.name, avatar = body.avatar, script=body.script,
+
+        try:
+            path = f'robots/files/{curent_user.id}'
+            if not os.path.exists(path):
+                os.makedirs(path)
+            path_to_file = f'{path}/{body.fileName}'
+            with open(path_to_file, 'a', encoding="utf-8") as temp_file:
+                temp_file.write(body.script)
+            temp_file.close()
+        except:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                detail="robot couldn't be saved")
+
+        robot = Robot(name=body.name, avatar = body.avatar, script=path_to_file,
                       user=curent_user)
+
         commit()
         return {'detail': "Robot created"}

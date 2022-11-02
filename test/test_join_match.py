@@ -1,6 +1,5 @@
 from fastapi.testclient import TestClient
-from app.main import *
-import jwt
+from app.main import app
 from pony.orm import db_session
 from app.api.models import *
 client = TestClient(app)
@@ -132,8 +131,8 @@ def test_exceed_maximum_players():
                 "id_robot": robot_test_2.id
             })
     
-    assert response.status_code == 400
-    assert response.json() == {'detail': 'The match exceed the maximum number of players'}
+    assert response.status_code == 200
+    assert response.json() == {"message": "User joined successfully"}
     with db_session:
         delete(r for r in Robot if r.name == "robot1")
         delete(r for r in Robot if r.name == "robot2")
