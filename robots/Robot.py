@@ -1,8 +1,8 @@
 class Robot:
 #Funciones auxiliares, el usuario no las conoce    
-    def __init__(self, bot_id, pos_x, pos_y):
+    def __init__(self, pos_x, pos_y):
         self.data = {}
-        self.data["bot_id"] = bot_id
+        self.data["bot_id"] = ""
         if self.__es_numero(pos_x) and self.__es_numero(pos_y):
             self.data["pos_x"] = pos_x
             self.data["pos_y"] = pos_y
@@ -44,6 +44,7 @@ class Robot:
     def receive_damage(self, dmg):
         self.data["health"] -= dmg
         if self.data["health"] <= 0:
+            self.data["health"] = 0
             self.data["alive"] = False
 
     def __es_numero(self, a):

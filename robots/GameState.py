@@ -1,5 +1,5 @@
-#bot_string = "\{ bot: {}, x: {}, y: {}, life: {}\}"
-#missile_string = "\{ x: {}, y: {}, exploded: {}\}"
+bot_string = "{{ id: {}, x: {}, y: {}, life: {}}}"
+missile_string = "{{ x: {}, y: {}, exploded: {}}}"
 
 class GameState:
     def __init__(self):
@@ -8,11 +8,11 @@ class GameState:
         self.missile_strings = []
         
     def add_bot(self, bot_id, bot_pos, bot_health):
-        self.bot_strings.append("{ bot: name" + ", x: " + str(bot_pos[0]) + ", y: " + str(bot_pos[1]) + ", life: " + str(bot_health) + "}")
+        self.bot_strings.append(bot_string.format(bot_id, bot_pos[0], bot_pos[1], bot_health))
         
     def add_missile(self, missile_pos, exploded):
-        #self.missile_strings.append(missile_string.format(missile_pos[0], missile_pos[1], exploded))
-        A=0
+        self.missile_strings.append(missile_string.format(missile_pos[0], missile_pos[1], exploded))
+        
         
     def commit_game_state(self):
         #self.final_json += 
@@ -33,7 +33,7 @@ class GameState:
 #                { id: , x: , y: , life:}, { id: , x: , y: , life:}
 #            ],
 #            missiles: [
-#                { por ahora viene vació, queda a definir }
+#                { x, y, exploded }
 #            ]
 #        },
 #        {
@@ -41,7 +41,7 @@ class GameState:
 #                { id: , x: , y: , life:}, { id: , x: , y: , life:}
 #            ],
 #            missiles: [
-#                { por ahora viene vació, queda a definir }
+#                { x, y, exploded }
 #            ]
 #        }
 #    ]
