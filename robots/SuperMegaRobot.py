@@ -9,13 +9,13 @@ class SuperMegaRobot(Robot.Robot):
     def respond(self):
         super().is_cannon_ready()
         
-        super().cannon(0, 0)
+        super().cannon(100, 50)
         
         super().point_scanner(0, 0)
         
         super().scanned()
         
-        super().drive(0, 0)
+        super().drive(0, 40)
         
         super().get_direction()
         
