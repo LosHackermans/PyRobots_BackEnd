@@ -12,7 +12,6 @@ def to_rads(x):
     return x * (pi / 180)
 
 create_bot_string = """
-from Robot import *
 from files.{}.{} import *
 self.bot = {}({}, {})
 """
