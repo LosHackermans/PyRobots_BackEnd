@@ -1,7 +1,8 @@
 from fastapi.testclient import TestClient
-from app.main import *
+from app.main import app
 import jwt
-
+from pony.orm import db_session
+from app.api.models import *
 
 client = TestClient(app)
 
@@ -23,17 +24,33 @@ encoded2 = encoded_jwt2.decode("utf-8")
 
 #test login
 def test_login():
+    with db_session:
+        User(username = "pedro", email = "famaf01@gmail.com", password = "nuevofamaf", is_validated = True)
     response = client.post(
         "/login",
         json ={"email": 'famaf01@gmail.com', "password": "nuevofamaf"}
     )
     assert response.status_code == 200
     assert response.json() == {'token': encoded}
+    with db_session:
+        delete (u for u in User if u.email == "famaf01@gmail.com")
 
 def test_incorrect_password():
+    with db_session:
+        User(username = "pedro", email = "famaf01@gmail.com", password = "nuevofamaf", is_validated = True)
     response = client.post(
         "/login",
         json ={"email": 'famaf01@gmail.com', "password": "asd"}
     )
     assert response.status_code == 200
     assert response.json() == {'error': ' incorrect Password'}
+    with db_session:
+        delete (u for u in User if u.email == "famaf01@gmail.com")
+
+def test_user_not_exist():
+    response = client.post(
+        "/login",
+        json ={"email": 'famaf@gmail.com', "password": "asd"}
+        )
+    assert response.status_code == 200
+    assert response.json() == {'error': 'User not exist'}
