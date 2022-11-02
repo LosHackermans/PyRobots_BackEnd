@@ -30,7 +30,7 @@ def test_create_robot():
     response = client.post(
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded},
-        json={"name": "exist", "avatar": "", "script": "acd"}
+        json={"name": "exist", "avatar": "", "script": "acd" , "fileName": "acd"}
     )
     assert response.status_code == 200
     assert response.json() == {'detail': "Robot created"}
@@ -45,7 +45,7 @@ def test_create_robot_with_avatar():
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded},
         json={"name": "example_with_avatar",
-              "avatar": "avatarpng", "script": "acd"}
+              "avatar": "avatarpng", "script": "acd", "fileName": "acd"}
     )
     assert response.status_code == 200
     assert response.json() == {'detail': "Robot created"}
@@ -58,7 +58,7 @@ def test_invalid_token():
     response = client.post(
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded2},
-        json={"name": "example2", "avatar": "", "script": "acd"}
+        json={"name": "example2", "avatar": "", "script": "acd", "fileName": "acd"}
     )
     assert response.status_code == 200
     assert response.json() == {'error': 'Invalid X-Token header'}
@@ -71,7 +71,7 @@ def test_create_bot_same_name():
     response = client.post(
         "/upload_robot",
         headers={"authorization": "Bearer " + encoded},
-        json={"name": "exist", "avatar": "", "script": "acd"}
+        json={"name": "exist", "avatar": "", "script": "acd", "fileName": "acd"}
     )
     assert response.status_code == 400
     assert response.json() == {'detail': "robot with this name already exists"}
@@ -83,7 +83,7 @@ def test_invalid_header():
     response = client.post(
         "/upload_robot",
         headers={"authorization": encoded},
-        json={"name": "example2", "avatar": "", "script": "acd"}
+        json={"name": "example2", "avatar": "", "script": "acd", "fileName": "acd"}
         )
     assert response.status_code == 200
     assert response.json() == {'error': 'Invalid X-Token header'}

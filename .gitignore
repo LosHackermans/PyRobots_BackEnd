@@ -6,3 +6,6 @@ database.sqlite
 
 # test
 .coverage
+
+# user files
+/robots/files/*

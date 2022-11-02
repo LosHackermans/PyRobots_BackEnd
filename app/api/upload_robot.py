@@ -5,14 +5,16 @@ from app.api.models import *
 from pony.orm import db_session
 from fastapi import APIRouter
 from app.get_user import *
+import os
 
 router = APIRouter()
 
 
 class Body(BaseModel):
     name: str
-    avatar: str        
+    avatar: str
     script: str
+    fileName: str
 
 
 @router.post("/upload_robot")
@@ -25,7 +27,21 @@ async def user_create_bot(body: Body, request: Request):
         if len(user_has_bot_already) > 0: 
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                 detail="robot with this name already exists")
-        robot = Robot(name=body.name, avatar = body.avatar, script=body.script,
+
+        try:
+            path = f'robots/files/{curent_user.id}'
+            if not os.path.exists(path):
+                os.makedirs(path)
+            path_to_file = f'{path}/{body.fileName}'
+            with open(path_to_file, 'a', encoding="utf-8") as temp_file:
+                temp_file.write(body.script)
+            temp_file.close()
+        except:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                detail="robot couldn't be saved")
+
+        robot = Robot(name=body.name, avatar = body.avatar, script=path_to_file,
                       user=curent_user)
+
         commit()
         return {'detail': "Robot created"}
