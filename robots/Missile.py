@@ -40,7 +40,8 @@ class Missile:
         return (self.exploded, self.pos[0], self.pos[1])
 
     def explosion_damage(self, target_pos):
-        i=0
+        dist_to_center = sqrt((abs(self.pos[0] - target_pos[0]))**2 + (abs(self.pos[1] - target_pos[1]))**2)
+        return EXPLOSION_DAMAGE if dist_to_center <= EXPLOSION_RADIUS else 0
         
 
     def get_position(self):
@@ -49,4 +50,4 @@ class Missile:
     def is_exploded(self):
         return self.exploded
 
-#sqrt(abs()
+

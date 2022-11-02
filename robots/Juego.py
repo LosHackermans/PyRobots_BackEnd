@@ -56,6 +56,7 @@ class Juego:
     def respond_bots(self):
         print("-------RESPOND BOTS")
         for bot in self.robots:
+            if bot.
             bot.respond()
 
     def move_bots(self):
@@ -101,7 +102,7 @@ class Juego:
             status = missile.update()
             if status[0]:
                 print(f"missile exploded at ({status[1]}, {status[2]})")
-                #check impact
+                #impacts
                 for bot in self.robots:
                     bot.receive_damage(missile.explosion_damage(bot.get_position()))
                 self.missiles.remove(missile)
@@ -112,29 +113,17 @@ class Juego:
         print("--------RECORD GAME STATE")
         state_string = "{\n\trobots: [\n"
         for bot in self.robots:
-            #state_string = f"\t\t\{ id: a, x: {bot.get_position()[0]}, y: {bot.get_position()[1]}, life: {100 - bot.get_damage()}\},\n"
-            #state_string += "\t],\n\tmissiles: [\n"
             self.game_state.add_bot(bot.get_id(), bot.get_position(), 100 - bot.get_damage())
         for missile in self.missiles:
-            #state_string += f"\t\t\{ x: {missile.get_position()[0]}, y: {missile.get_position()[1]}\},\n"
             self.game_state.add_missile(missile.get_position(), missile.is_exploded())
         
         self.game_state.commit_game_state()
         
         
     def get_results(self, simulacion = True):
-        return "pepe" if simulacion else self.game_state.produce_final_json()
-        #{
-        #    robots: [
-        #        { id: , x: , y: , life:},
-        #        { id: , x: , y: , life:}
-        #    ],
-        #    missiles: [
-        #        { por ahora viene vació, queda a definir }
-        #    ]
-        #}
-        
+        return self.game_state.produce_final_json() if simulacion else "self.winner"
+
 
 if __name__ == "__main__":
-    Juego(bots_hardcodeados, 3)
-    print(Juego.get_results)
+    game = Juego(bots_hardcodeados, 3)
+    print(game.get_results())
