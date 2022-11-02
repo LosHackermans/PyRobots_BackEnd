@@ -14,21 +14,20 @@ def get_matchs(user):
     Games_already_join = []
     matchs = Match.select() .   order_by(
         desc(Match.name), Match.id)[:]
-    
-    for i in matchs:
-        if i.is_joinable:   # si la partida esta llena, o ya comenzo esta variable es false
-        
-            if i.user == user:
-                User_Games.append({"id": i.id, "name": i.name})
-            else:
-                esta_unido = False
-                for j in i.robot_in_matches:
-                    for h in user.robots:
-                        if j.robot == h and i.user != user:
-                            Games_already_join.append({"id": i.id, "name": i.name})
-                            esta_unido = True
-                if not esta_unido:       
-                    Games_To_Join.append({"id": i.id, "name": i.name})
+
+    for match in matchs:
+        if match.user == user:
+            User_Games.append({"id": match.id, "name": match.name})
+        else:
+            esta_unido = False
+            for robot_in_match in match.robot_in_matches:
+                for robot in user.robots:
+                    if robot_in_match.robot == robot and match.user != user:
+                        Games_already_join.append(
+                            {"id": match.id, "name": match.name})
+                        esta_unido = True
+            if not esta_unido and match.is_joinable:
+                Games_To_Join.append({"id": match.id, "name": match.name})
     return (User_Games, Games_To_Join, Games_already_join)
 
 
