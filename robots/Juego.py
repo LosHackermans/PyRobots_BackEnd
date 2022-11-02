@@ -5,7 +5,6 @@ from random import randrange
 from math import cos, sin, pi
 from GameState import *
 
-bots_hardcodeados = ["CircleBot.py", "SquareBot.py", "SuperMegaRobot.py"]
 MAX_SPEED = 100
 WALL_DAMAGE = 10
 
@@ -13,8 +12,7 @@ def to_rads(x):
     return x * (pi / 180)
 
 create_bot_string = """
-from Robot import *
-from {} import *
+from files.{}.{} import *
 self.bot = {}({}, {})
 """
 
@@ -29,9 +27,10 @@ class Juego:
         self.run_game()
         
     def instantiate_bots(self):
-        for botname in self.bot_list:
+        for filestring in self.bot_list:
             spawn = (randrange(0, 1000, 20), randrange(0, 1000, 20))
-            exec(create_bot_string.format(botname[:-3], botname[:-3], spawn[0], spawn[1]))
+            user_id, botname = filestring[len("robots/files/"):].split('/')
+            exec(create_bot_string.format(user_id, botname[:-3], botname[:-3], spawn[0], spawn[1]))
             self.bot.data["bot_id"] = botname[:-3]
             self.robots.append(self.bot)
         
@@ -120,5 +119,5 @@ class Juego:
 
 
 if __name__ == "__main__":
-    game = Juego(bots_hardcodeados, 10000)
+    game = Juego(["robots/files/admin/CircleBot.py", "robots/files/admin/SquareBot.py", "robots/files/admin/SuperMegaRobot.py"], 10)
     print(game.get_results(simulacion = False))
