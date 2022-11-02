@@ -5,16 +5,13 @@ from app.api.models import *
 from fastapi.encoders import jsonable_encoder
 from pony.orm import db_session
 from fastapi import APIRouter
+from app.get_user import SECRET_KEY, ALGORITHM
 
 router = APIRouter()
 
 class LoginItem(BaseModel):
     email: str
     password: str
-
-SECRET_KEY = "my_secret_key"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 800
 
 
 @router.post("/login")
@@ -28,7 +25,6 @@ async def login_user(login_item: LoginItem):
                 return {'token': encoded_jwt}
             else:
                 return {'error': ' incorrect Password'}
-        elif not(User.exists(email=data["email"])):
+        if not(User.exists(email=data["email"])):
             return {'error': 'User not exist'}
-        else:
-            return {'error': 'Login failed'}
+

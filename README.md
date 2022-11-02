@@ -27,4 +27,5 @@ $ git tag <tag_name> <commit_hash>
 (eliminar db si existe)
 python3 montardbtest.py
 python3 -m pytest
+coverage run -m --source=test pytest && coverage report -m
 ------------

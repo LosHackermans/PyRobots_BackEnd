@@ -3,3 +3,9 @@ __pycache__
 
 # database
 database.sqlite
+
+# test
+.coverage
+
+# user files
+/robots/files/*

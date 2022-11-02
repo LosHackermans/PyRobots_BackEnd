@@ -50,7 +50,3 @@ async def signup(user: signUpModel):
         )
 
     return {"message": "User created successfully"}
-
-@router.get('/')
-def read_root():
-    return {"msg": "Bienvenido de nuevo!!!"}
