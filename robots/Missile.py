@@ -1,5 +1,5 @@
 from math import cos, sin, pi, sqrt
-MISSILE_SPEED = 350
+MISSILE_SPEED = 250
 EXPLOSION_RADIUS = 30
 EXPLOSION_DAMAGE = 50
 
@@ -35,7 +35,6 @@ class Missile:
         if self.remaining_distance <= 0:
             self.exploded = True
         ##TODO buscar una forma mas fancy de hacer esto, tipo max(0, min(1000, prev_x)) 
-        print(f"{self.pos} ----->> ({next_x}, {next_y})")
         self.pos = (next_x, next_y)
         return (self.exploded, self.pos[0], self.pos[1])
 

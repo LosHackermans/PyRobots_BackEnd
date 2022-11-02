@@ -15,7 +15,7 @@ class SuperMegaRobot(Robot.Robot):
         
         super().scanned()
         
-        super().drive(0, 10)
+        super().drive(0, 40)
         
         super().get_direction()
         

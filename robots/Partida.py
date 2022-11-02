@@ -3,7 +3,7 @@ from Juego import *
 class Partida:
     
 
-    def __init__(self):
+    def __init__(self, ):
         print("init de Partida")
         
 

@@ -46,6 +46,9 @@ class Robot:
         if self.data["health"] <= 0:
             self.data["health"] = 0
             self.data["alive"] = False
+            
+    def is_alive(self):
+        return self.data["alive"]
 
     def __es_numero(self, a):
         return (type(a) == int or type(a) == float) and a >= 0

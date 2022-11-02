@@ -27,7 +27,6 @@ class Juego:
         self.robots = []
         self.game_state = GameState()
         self.run_game()
-        print(self.game_state.produce_final_json())
         
     def instantiate_bots(self):
         for botname in self.bot_list:
@@ -35,7 +34,6 @@ class Juego:
             exec(create_bot_string.format(botname[:-3], botname[:-3], spawn[0], spawn[1]))
             self.bot.data["bot_id"] = botname[:-3]
             self.robots.append(self.bot)
-            print(self.bot.get_position())
         
     def initialize_bots(self):
         for bot in self.robots:
@@ -50,17 +48,14 @@ class Juego:
             self.update_scanners()
             self.shoot_cannons()
             self.update_missiles()
-            self.record_game_state()
-            sleep(0.5)
+            self.game_state.commit_game_state()
     
     def respond_bots(self):
-        print("-------RESPOND BOTS")
         for bot in self.robots:
-            if bot.
-            bot.respond()
+            if bot.is_alive():
+                bot.respond()
 
     def move_bots(self):
-        print("-------MOVE BOTS")
         for bot in self.robots:
             prev_x, prev_y = bot.get_position()
             speed = bot.get_velocity()
@@ -83,47 +78,47 @@ class Juego:
                 next_y = 0
             ##TODO buscar una forma mas fancy de hacer esto, tipo max(0, min(1000, prev_x)) o extraer el método
             bot.set_position(next_x, next_y)
-            print(f"bot {bot} movido de ({prev_x}, {prev_y}) a ({next_x}, {next_y}), mov= ({direction}, {speed})")
+            self.game_state.add_bot(bot.get_id(), bot.get_position(), 100 - bot.get_damage())
+            #print(f"bot {bot} movido de ({prev_x}, {prev_y}) a ({next_x}, {next_y}), mov= ({direction}, {speed})")
         
     def update_scanners(self):
-        print("-------UPDATE SCANNERS")
+        i=0
+        #print("-------UPDATE SCANNERS")
 
     def shoot_cannons(self):
-        print("-------SHOOT CANNONS")
         for bot in self.robots:
             if bot.is_cannon_ready() and bot.data["intends_to_shoot"]:
                 x, y = bot.get_position()
                 self.missiles.append(Missile(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"]))
-                print("cannon shot from ({}, {}) with direction {} and distance {}".format(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"]))
+                #print("cannon shot from ({}, {}) with direction {} and distance {}".format(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"]))
         
     def update_missiles(self):
-        print("-------UPDATE MISSILES")
         for missile in self.missiles:
             status = missile.update()
+            self.game_state.add_missile(missile.get_position(), status[0])
             if status[0]:
-                print(f"missile exploded at ({status[1]}, {status[2]})")
+                #print(f"missile exploded at ({status[1]}, {status[2]})")
                 #impacts
                 for bot in self.robots:
                     bot.receive_damage(missile.explosion_damage(bot.get_position()))
                 self.missiles.remove(missile)
-            else:
-                print(f"missile traveling at ({status[1]}, {status[2]}) with direction {missile.direction}, remaining travel {missile.remaining_distance}")
-        
-    def record_game_state(self):
-        print("--------RECORD GAME STATE")
-        state_string = "{\n\trobots: [\n"
-        for bot in self.robots:
-            self.game_state.add_bot(bot.get_id(), bot.get_position(), 100 - bot.get_damage())
-        for missile in self.missiles:
-            self.game_state.add_missile(missile.get_position(), missile.is_exploded())
-        
-        self.game_state.commit_game_state()
-        
-        
+            #else:
+                #print(f"missile traveling at ({status[1]}, {status[2]}) with direction {missile.direction}, remaining travel {missile.remaining_distance}")
+                
     def get_results(self, simulacion = True):
-        return self.game_state.produce_final_json() if simulacion else "self.winner"
+        winning_bots = []
+        winner = ""
+        for bot in self.robots:
+            if bot.is_alive():
+                winning_bots.append(bot) 
+        if len(winning_bots) == 1:
+            winner = winning_bots[0].get_id()
+        else:
+            winner = "EMPATE"
+            
+        return self.game_state.produce_final_json() if simulacion else winner
 
 
 if __name__ == "__main__":
-    game = Juego(bots_hardcodeados, 3)
-    print(game.get_results())
+    game = Juego(bots_hardcodeados, 10000)
+    print(game.get_results(simulacion = False))
