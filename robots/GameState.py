@@ -8,23 +8,23 @@ class GameState:
         self.missile_strings = []
         
     def add_bot(self, bot_id, bot_pos, bot_health):
-        self.bot_strings.append(bot_string.format(bot_id, bot_pos[0], bot_pos[1], bot_health))
+        self.bot_strings.append({"id": bot_id, "x": bot_pos[0], "y": bot_pos[1], "life": bot_health})
         
     def add_missile(self, missile_pos, exploded):
-        self.missile_strings.append(missile_string.format(missile_pos[0], missile_pos[1], exploded))
+        self.missile_strings.append({"x": missile_pos[0], "y": missile_pos[1], "exploded": exploded})
         
         
     def commit_game_state(self):
         #self.final_json += 
         state_string = ""
-        state_string += "{\n\trobots: [\n" + "\t\t " + ', '.join(self.bot_strings) + "\n\t],\n"
+        state_string = {"robots": self.bot_strings,
+                        "missiles": self.missile_strings}
         self.bot_strings = []
-        state_string += "\tmissiles: [\n\t\t" + ', '.join(self.missile_strings) + "\n\t]\n}"
         self.missile_strings = []
         self.state_strings.append(state_string)
         
     def produce_final_json(self):
-        return "{\nrounds: [\n" + ', '.join(self.state_strings) + "\n]\n}"
+        return {"rounds": self.state_strings}
         
 #{
 #    rounds: [
