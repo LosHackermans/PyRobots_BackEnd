@@ -1,4 +1,4 @@
-from Juego import *
+from robots.Juego import *
 
 class Partida:
     

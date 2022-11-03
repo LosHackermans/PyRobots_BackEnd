@@ -29,7 +29,7 @@ async def user_create_bot(body: Body, request: Request):
                                 detail="robot with this name already exists")
 
         try:
-            path = f'robots/files/{curent_user.id}'
+            path = f'robots/files/{curent_user.username}'
             if not os.path.exists(path):
                 os.makedirs(path)
             path_to_file = f'{path}/{body.fileName}'

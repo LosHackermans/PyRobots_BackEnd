@@ -1,9 +1,9 @@
 from time import sleep
-from Robot import *
-from Missile import Missile
+from robots.Robot import *
+from robots.Missile import Missile
 from random import randrange
 from math import cos, sin, pi
-from GameState import *
+from robots.GameState import *
 
 MAX_SPEED = 100
 WALL_DAMAGE = 10
@@ -12,7 +12,7 @@ def to_rads(x):
     return x * (pi / 180)
 
 create_bot_string = """
-from files.{}.{} import *
+from robots.files.{}.{} import *
 self.bot = {}({}, {})
 """
 
