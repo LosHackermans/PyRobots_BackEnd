@@ -45,9 +45,12 @@ def test_valid_example():
         headers={"authorization": "Bearer " + encoded}
     )
     assert response.status_code ==  200
-    assert response.json() == {"robots":[{'id': id6, 'name': 'robot6'}, 
-    {'id': id5, 'name': 'robot5'}, {'id': id4, 'name': 'robot4'},
-    {'id': id3, 'name': 'robot3'}, {'id': id2, 'name': 'robot2'}, {'id': id1, 'name': 'robot1'}]}
+    assert response.json() == {"robots":[{'id': id6, 'name': 'robot6', 'avatar': '', 'games_won': 0, 'games_draw': 0, 'games_played': 0}, 
+    {'id': id5, 'name': 'robot5', 'avatar': '', 'games_won': 0, 'games_draw': 0, 'games_played': 0}, 
+    {'id': id4, 'name': 'robot4', 'avatar': '', 'games_won': 0, 'games_draw': 0, 'games_played': 0},
+    {'id': id3, 'name': 'robot3', 'avatar': '', 'games_won': 0, 'games_draw': 0, 'games_played': 0}, 
+    {'id': id2, 'name': 'robot2', 'avatar': '', 'games_won': 0, 'games_draw': 0, 'games_played': 0}, 
+    {'id': id1, 'name': 'robot1', 'avatar': '', 'games_won': 0, 'games_draw': 0, 'games_played': 0}]}
     with db_session:
         delete(r for r in Robot if r.name == "robot1")
         delete(r for r in Robot if r.name == "robot2")

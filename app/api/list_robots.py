@@ -7,13 +7,27 @@ from app.get_user import *
 
 router = APIRouter()
 
+def get_robot_statistics(id_robot):
+    robot_games = select(e for e in Robot_in_match if (e.id == id_robot))
+
+    games_draw = 0
+    games_won = 0
+    games_played = len(robot_games)
+
+    for i in robot_games:
+        games_won += i.games_won
+        games_draw += i.games_draw
+
+    return games_won, games_draw, games_played
 
 def get_user_robots(user):
     list_of_robots = []
     robots = Robot.select(lambda r: r.user == user).   order_by(
         desc(Robot.name), Robot.id)[:]
     for i in robots:
-        list_of_robots.append({"id": i.id, "name": i.name})
+        # games_won, games_draw, games_played = 0, 0, 0
+        games_won, games_draw, games_played = get_robot_statistics(i.id)
+        list_of_robots.append({"id": i.id, "name": i.name, "avatar": i.avatar, "games_won": games_won, "games_draw": games_draw, "games_played": games_played})
 
     return list_of_robots
 
