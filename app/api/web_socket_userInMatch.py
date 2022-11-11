@@ -27,19 +27,19 @@ async def webssocket_endpoint_match(websocket: WebSocket):
                 try: 
                     ##Buscar partida y sus participantes
                     for robot_o in The_Match.robot_in_matches:
-                        if (robot_o.user.id == The_Match.user.id):
-                            robot_of_the_cretor = robot_o.name
-                            robot_of_the_cretor_id = robot_o.id
+                        if (robot_o.robot.user.id == The_Match.user.id):
+                            robot_of_the_cretor = robot_o.robot.name
+                            robot_of_the_cretor_id = robot_o.robot.id
                             match_creator = {"Owner": The_Match.user.name, "Robot_name": robot_of_the_cretor}
                         else:
                             match_creator = {"Owner": The_Match.user.name, "Robot_name": "Unknown"}
 
-                    for robot in Match.robot_in_matches:
-                        if (robot.id == robot_of_the_cretor_id):
+                    for robot_o in Match.robot_in_matches:
+                        if (robot_o.robot.id == robot_of_the_cretor_id):
                             pass
                         else:
-                            robot_name = robot.name
-                            robot_id = robot.id
+                            robot_name = robot_o.robot.name
+                            robot_id = robot_o.robot.id
                             robot_user = Robot.get(lambda r: r.id == robot_id)
                             user_of_the_robot = robot_user.user.name
 
@@ -48,7 +48,7 @@ async def webssocket_endpoint_match(websocket: WebSocket):
 
 
                     json_players = {"Creator": match_creator, "Players": list_of_players}
-                    await websocket.send_json(json_players) #send_text()
+                    await websocket.send_json(json_players) 
             
                 except:
                     pass
