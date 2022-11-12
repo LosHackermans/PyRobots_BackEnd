@@ -22,10 +22,11 @@ async def webssocket_endpoint_match(websocket: WebSocket):
         robot_of_the_cretor_id = 0
 
         with db_session:
-            The_Match = Match.get(lambda m: m.id == match_id)
-            while True:
+            while True: # punto 1-> idea sobre el while(al pie) -> while not(match_is_on)
                 try: 
+
                     ##Buscar partida y sus participantes
+                    The_Match = Match.get(lambda m: m.id == match_id)
                     for robot_o in The_Match.robot_in_matches:
                         if (robot_o.robot.user.id == The_Match.user.id):
                             robot_of_the_cretor = robot_o.robot.name
@@ -54,8 +55,28 @@ async def webssocket_endpoint_match(websocket: WebSocket):
                     pass
                     break
 
+            #Una vez que se recibe que inicio la partida
+            # EJERCUTAR PARTIDA
+            # ENVIAR RESULTADOS DE PARTIDA
+            #RESULTADOS = resultados partida
+            #await websocket.send_json(RESULTADOS)
 
 
+
+
+##################################################################
+
+# IDEA DE COMO RECIBIR Y MANDAR EL JSON 
+
+# Espero recibir:
+
+# {
+#     "id": id
+# }
+
+
+
+# IDEA DE COMO MANDAR EL JSON
 # {
 #     Creator:
 #             
@@ -67,3 +88,7 @@ async def webssocket_endpoint_match(websocket: WebSocket):
 #              {"Player": player_name, "Robot_name": name}
 #             ]
 # }
+
+# 1) Se podria recibir un booleano que indique si el creador ha dado al boton de iniciar partida
+#  y hacer un while sobre ese booleano mientras sea falso, y salir del while una vez que sea verdadero.
+#  Con esto podriamos correr la partida y enviar un json con el resultado
