@@ -78,7 +78,6 @@ class Juego:
             ##TODO buscar una forma mas fancy de hacer esto, tipo max(0, min(1000, prev_x)) o extraer el método
             bot.set_position(next_x, next_y)
             self.game_state.add_bot(bot.get_id(), bot.get_position(), 100 - bot.get_damage())
-            #print(f"bot {bot} movido de ({prev_x}, {prev_y}) a ({next_x}, {next_y}), mov= ({direction}, {speed})")
         
     def update_scanners(self):
         i=0
@@ -89,20 +88,15 @@ class Juego:
             if bot.is_cannon_ready() and bot.data["intends_to_shoot"]:
                 x, y = bot.get_position()
                 self.missiles.append(Missile(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"]))
-                #print("cannon shot from ({}, {}) with direction {} and distance {}".format(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"]))
         
     def update_missiles(self):
         for missile in self.missiles:
             status = missile.update()
             self.game_state.add_missile(missile.get_position(), status[0])
             if status[0]:
-                #print(f"missile exploded at ({status[1]}, {status[2]})")
-                #impacts
                 for bot in self.robots:
                     bot.receive_damage(missile.explosion_damage(bot.get_position()))
                 self.missiles.remove(missile)
-            #else:
-                #print(f"missile traveling at ({status[1]}, {status[2]}) with direction {missile.direction}, remaining travel {missile.remaining_distance}")
                 
     def get_results(self, simulacion = True):
         winning_bots = []

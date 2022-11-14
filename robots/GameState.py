@@ -1,5 +1,3 @@
-bot_string = "{{ id: {}, x: {}, y: {}, life: {}}}"
-missile_string = "{{ x: {}, y: {}, exploded: {}}}"
 
 class GameState:
     def __init__(self):
@@ -14,8 +12,7 @@ class GameState:
         self.missile_strings.append({"x": missile_pos[0], "y": missile_pos[1], "exploded": exploded})
         
         
-    def commit_game_state(self):
-        #self.final_json += 
+    def commit_game_state(self): 
         state_string = ""
         state_string = {"robots": self.bot_strings,
                         "missiles": self.missile_strings}
@@ -25,24 +22,3 @@ class GameState:
         
     def produce_final_json(self):
         return {"rounds": self.state_strings}
-        
-#{
-#    rounds: [
-#        {
-#            robots: [
-#                { id: , x: , y: , life:}, { id: , x: , y: , life:}
-#            ],
-#            missiles: [
-#                { x, y, exploded }
-#            ]
-#        },
-#        {
-#            robots: [
-#                { id: , x: , y: , life:}, { id: , x: , y: , life:}
-#            ],
-#            missiles: [
-#                { x, y, exploded }
-#            ]
-#        }
-#    ]
-#}
