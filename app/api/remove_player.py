@@ -10,8 +10,7 @@ router = APIRouter()
 
 
 @router.post("/abandon/{match_id}")
-async def remove_user_from_match(match_id, request): # , data: UserRemove):
-    #get_user = User.get((lambda m: m.id == data.user_id))
+async def remove_user_from_match(match_id, request):
     current_user =  get_user(request.headers)
 
     for robot_o in match_id.robot_in_matches:
@@ -19,5 +18,4 @@ async def remove_user_from_match(match_id, request): # , data: UserRemove):
             if (robot_o.robot.id == other_robot.id):
                 match_id.remove(robot_o)
 
-    
-    return {"detail": "User remove succesful from the match"}
+    return {"detail": "User remove successful from the match"}
