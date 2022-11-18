@@ -5,8 +5,8 @@ from pony.orm import db_session
 from fastapi import APIRouter
 import os
 from app.api.upload_robot import Body
-from robots.files.default.CircleBot import CircleBot
-from robots.files.default.SquareBot import SquareBot
+from robots.default_robots.CircleBot import CircleBot
+from robots.default_robots.SquareBot import SquareBot
 from app.api.upload_robot import update_default_robot
 router = APIRouter()
 
