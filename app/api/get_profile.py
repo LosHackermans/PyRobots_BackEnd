@@ -6,7 +6,9 @@ from app.get_user import *
 from pydantic import BaseModel
 
 
-@router.post("/") #("/get_url:/get_profile")
+router = APIRouter()
+
+@router.post("/profile")
 async def get_profile(request: Request):
     current_user =  get_user(request.headers)
 

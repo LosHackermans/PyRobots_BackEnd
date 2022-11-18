@@ -6,11 +6,10 @@ from pydantic import BaseModel
 from app.get_user import *
 
 
-# class UserRemove(BaseModel):
-#     user_id: int
+router = APIRouter()
 
 
-@router.post("/lobby/{match_id}") #ver ruta
+@router.post("/abandon/{match_id}")
 async def remove_user_from_match(match_id, request): # , data: UserRemove):
     #get_user = User.get((lambda m: m.id == data.user_id))
     current_user =  get_user(request.headers)
