@@ -7,10 +7,10 @@ from app.api.models import *
 client = TestClient(app)
 
 
-def test_invalid_header():
-    response = client.post(
-        "/create_match",
-        headers={"authorization": encoded},
-    )
-    assert response.status_code == 200
-    assert response.json() == {'error': 'Invalid X-Token header'}
+# def test_invalid_header():
+#     response = client.post(
+#         "/create_match",
+#         headers={"authorization": encoded},
+#     )
+#     assert response.status_code == 200
+#     assert response.json() == {'error': 'Invalid X-Token header'}

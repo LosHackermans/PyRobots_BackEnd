@@ -14,7 +14,7 @@ async def start_match(match_id):
 
     The_Match = Match.get(lambda m: m.id == match_id)
 
-    if The_Match == None:     # no existe el usuario en la bd o no hay header
+    if The_Match == None:     # no existe el match
         return {'error': 'Invalid X-Token header'}
 
     match_is_ready_to_start = 1
