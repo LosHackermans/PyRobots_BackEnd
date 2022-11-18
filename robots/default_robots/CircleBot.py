@@ -1,4 +1,5 @@
 from app.api.upload_robot import Body
+import base64
 
 
 circle_script = """from robots.Robot import Robot
@@ -15,11 +16,9 @@ class CircleBot(Robot):
         super().cannon(180, 600)
   """
 
-circle_avatar = ""
-
 CircleBot = Body(
     name="Circle Bot",
-    avatar= circle_avatar,
+    avatar= (b'data:image/jpg;base64,' + base64.b64encode(open("robots/default_robots/CircleBot_avatar.jpg", "rb").read())),
     script= circle_script,
     fileName="CircleBot.py",
     )

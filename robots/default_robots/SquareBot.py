@@ -1,4 +1,5 @@
 from app.api.upload_robot import Body
+import base64
 
 
 square_script = """from robots.Robot import Robot
@@ -18,11 +19,9 @@ class SquareBot(Robot):
             self.turncount = 2
   """
 
-square_avatar = ""
-
 SquareBot = Body(
     name="Square Bot",
-    avatar= square_avatar,
+    avatar= (b'data:image/jpg;base64,' + base64.b64encode(open("robots/default_robots/SquareBot_avatar.jpg", "rb").read())),
     script= square_script,
     fileName="SquareBot.py",
     )
