@@ -12,6 +12,8 @@ router = APIRouter()
 async def get_profile(request: Request):
     current_user =  get_user(request.headers)
 
+    if current_user == None:     # no existe el usuario en la bd o no hay header
+        return {'error': 'Invalid X-Token header'}
 
     current_user_data = {
         "username": current_user.username,

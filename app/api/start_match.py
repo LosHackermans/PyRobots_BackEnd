@@ -13,11 +13,13 @@ router = APIRouter()
 async def start_match(match_id):
 
     The_Match = Match.get(lambda m: m.id == match_id)
+
+    if The_Match == None:     # no existe el usuario en la bd o no hay header
+        return {'error': 'Invalid X-Token header'}
+
     match_is_ready_to_start = 1
-    if (match_is_ready_to_start < 2):
-        match_is_ready_to_start = 0
-        for user_in_match in The_Match.robot_in_matches:
-            match_is_ready_to_start += 1
+    if (match_is_ready_to_start < 2 or match_is_ready_to_start > 4):
+        match_is_ready_to_start = The_Match.robot_in_matches.count()
 
         return {"detail": "The match is not ready to start yet"}
     else:

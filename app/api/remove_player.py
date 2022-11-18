@@ -11,7 +11,10 @@ router = APIRouter()
 
 @router.post("/abandon/{match_id}")
 async def remove_user_from_match(match_id, request):
+    
     current_user =  get_user(request.headers)
+    if current_user == None:     # no existe el usuario en la bd o no hay header
+        return {'error': 'Invalid X-Token header'}
 
     for robot_o in match_id.robot_in_matches:
         for other_robot in current_user.robots:
