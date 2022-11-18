@@ -7,6 +7,7 @@ import os
 from app.api.upload_robot import Body
 from robots.files.default.CircleBot import CircleBot
 from robots.files.default.SquareBot import SquareBot
+from app.api.upload_robot import update_default_robot
 router = APIRouter()
 
 
@@ -58,23 +59,3 @@ async def signup(user: signUpModel):
         update_default_robot(SquareBot, current_user)
 
     return {"message": "User created successfully"}
-
-
-def update_default_robot(robot: Body, current_user: User):
-    with db_session:
-        try:
-            path = f'robots/files/{current_user.username}'
-            if not os.path.exists(path):
-                os.makedirs(path)
-            path_to_file = f'{path}/{robot.fileName}'
-            with open(path_to_file, 'a', encoding="utf-8") as temp_file:
-                temp_file.write(robot.script)
-            temp_file.close()
-        except:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                                detail="robot couldn't be saved")
-
-        Robot(name=robot.name, avatar=robot.avatar,
-              script=path_to_file, user=current_user)
-        commit()
-        return {'detail': "Robot created"}
