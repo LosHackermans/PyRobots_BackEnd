@@ -1,10 +1,14 @@
-from fastapi import FastAPI,HTTPException, status
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 from app.api.models import *
 from pony.orm import db_session
 from fastapi import APIRouter
-
+import os
+from app.api.upload_robot import Body
+from robots.files.default.CircleBot import CircleBot
+from robots.files.default.SquareBot import SquareBot
 router = APIRouter()
+
 
 class signUpModel(BaseModel):
     username: str
@@ -41,7 +45,7 @@ async def signup(user: signUpModel):
             # raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
             # detail= "Passwords do not match")
 
-        User(
+        current_user = User(
             username=user.username,
             email=user.email,
             password=user.password,
@@ -49,4 +53,28 @@ async def signup(user: signUpModel):
             is_validated=False
         )
 
+        # Upload default robots
+        update_default_robot(CircleBot, current_user)
+        update_default_robot(SquareBot, current_user)
+
     return {"message": "User created successfully"}
+
+
+def update_default_robot(robot: Body, current_user: User):
+    with db_session:
+        try:
+            path = f'robots/files/{current_user.username}'
+            if not os.path.exists(path):
+                os.makedirs(path)
+            path_to_file = f'{path}/{robot.fileName}'
+            with open(path_to_file, 'a', encoding="utf-8") as temp_file:
+                temp_file.write(robot.script)
+            temp_file.close()
+        except:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                detail="robot couldn't be saved")
+
+        Robot(name=robot.name, avatar=robot.avatar,
+              script=path_to_file, user=current_user)
+        commit()
+        return {'detail': "Robot created"}
