@@ -14,6 +14,7 @@ def get_room(match_id):
         The_Match = Match.get(lambda m: m.id == match_id)
         list_of_players = []
         robot_of_the_cretor_id = 0
+        match_creator = {"Owner": "Unknown", "Robot_name": "Unknown"}
         # Buscar partida y sus participantes
         for robot_o in The_Match.robot_in_matches:
             if (robot_o.robot.user.id == The_Match.user.id):
@@ -33,7 +34,7 @@ def get_room(match_id):
 @router.websocket("/lobby/{match_id}")
 async def webssocket_endpoint_match(websocket: WebSocket, match_id):
     await manager.connect(websocket, match_id)
-    await manager.broadcast(get_room(match_id)) 
+    await manager.broadcast(get_room(match_id), match_id) 
     while True:
         if websocket.application_state == WebSocketState.CONNECTED:
             data = await websocket.receive_text()
