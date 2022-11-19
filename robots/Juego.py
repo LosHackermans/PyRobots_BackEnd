@@ -114,4 +114,5 @@ class Juego:
 
 if __name__ == "__main__":
     game = Juego(["robots/files/admin/CircleBot.py", "robots/files/admin/SquareBot.py", "robots/files/admin/SuperMegaRobot.py"], 10)
+    #game.run_game()
     print(game.get_results(simulacion = False))
