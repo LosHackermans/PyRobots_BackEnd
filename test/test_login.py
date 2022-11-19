@@ -47,6 +47,19 @@ def test_incorrect_password():
     with db_session:
         delete (u for u in User if u.email == "famaf01@gmail.com")
 
+def test_login_not_verify():
+    with db_session:
+        User(username = "pedro", email = "famaf01@gmail.com", password = "nuevofamaf", is_validated = False)
+    response = client.post(
+        "/login",
+        json ={"email": 'famaf01@gmail.com', "password": "nuevofamaf"}
+    )
+    assert response.status_code == 200
+    assert response.json() == {'error': ' not verify'}
+    with db_session:
+        delete (u for u in User if u.email == "famaf01@gmail.com")
+
+
 def test_user_not_exist():
     response = client.post(
         "/login",

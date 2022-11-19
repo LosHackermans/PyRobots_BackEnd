@@ -10,8 +10,10 @@ class User(db.Entity):
     password = Required(str)
     avatar = Optional(str)
     is_validated = Required(bool)
+    verify_token = Optional(str)
     robots = Set('Robot')
     matches = Set('Match')
+    
 
 
 class Robot(db.Entity):
