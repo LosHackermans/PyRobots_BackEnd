@@ -14,12 +14,13 @@ class Robot:
         self.data["direction"] = 0
         self.data["velocity"] = 0
         self.data["cannon_ready"] = True
+        self.data["intends_to_shoot"] = False
+        self.data["shot_last_round"] = False
         self.data["cannon_degree"] = 0
         self.data["cannon_distance"] = 0
         self.data["scanner_direction"] = 0
         self.data["scanner_resolution"] = 0
         self.data["scanned"] = 0
-        self.data["intends_to_shoot"] = False
         
     def get_id(self):
         return self.data["bot_id"]
@@ -35,6 +36,7 @@ class Robot:
         was_ready = self.data["cannon_ready"]
         if was_ready:
             self.data["cannon_ready"] = False
+            self.data["shot_last_round"] = True
         return was_ready
         
     def set_position(self, x, y):
@@ -49,6 +51,12 @@ class Robot:
             
     def is_alive(self):
         return self.data["alive"]
+        
+    def reload_cannons(self):
+        if self.data["shot_last_round"]:
+            self.data["shot_last_round"] = False
+        else:
+            self.data["cannon_ready"] = True
 
     def __es_numero(self, a):
         return (type(a) == int or type(a) == float) and a >= 0
