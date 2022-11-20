@@ -30,7 +30,7 @@ def test_create_user():
         '/create_user',
         json = {
                 "username": "Juan8",
-                "email": "gonzalogarciazurlo@gmail.com",
+                "email": "pyrobotsok@gmail.com",
                 "password": "password",
                 "avatar": "asdasd"
                 #"passwordRepeated": "password"
