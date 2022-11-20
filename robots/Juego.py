@@ -4,6 +4,7 @@ from robots.Missile import Missile
 from random import randrange
 from math import cos, sin, pi
 from robots.GameState import *
+from robots.Scanner import scan_enemies
 
 MAX_SPEED = 100
 WALL_DAMAGE = 10
@@ -47,6 +48,7 @@ class Juego:
             self.update_scanners()
             self.shoot_cannons()
             self.update_missiles()
+            self.reload_cannons()
             self.game_state.commit_game_state()
     
     def respond_bots(self):
@@ -80,14 +82,25 @@ class Juego:
             self.game_state.add_bot(bot.get_id(), bot.get_position(), 100 - bot.get_damage())
         
     def update_scanners(self):
-        i=0
-        #print("-------UPDATE SCANNERS")
+        for bot in self.robots:
+            enemy_positions = []
+            for e in self.robots:
+                if e.get_position() != bot.get_position():
+                    enemy_positions.append(e.get_position())
+            bot.data["scanned"] = scan_enemies(bot.get_position(), enemy_positions, bot.data["scanner_direction"], bot.data["scanner_resolution"])
+
 
     def shoot_cannons(self):
         for bot in self.robots:
             if bot.is_cannon_ready() and bot.data["intends_to_shoot"]:
                 x, y = bot.get_position()
                 self.missiles.append(Missile(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"]))
+                bot.data["intends_to_shoot"] = False
+                bot.spend_cannon()
+    
+    def reload_cannons(self):
+        for bot in self.robots:
+            bot.reload_cannons()
         
     def update_missiles(self):
         for missile in self.missiles:
