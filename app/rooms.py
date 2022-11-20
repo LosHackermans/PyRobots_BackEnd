@@ -1,8 +1,9 @@
 from fastapi import WebSocket
 
+
 class ConnectionManager:
     def __init__(self):
-        self.active_connections= {}
+        self.active_connections = {}
 
     async def connect(self, websocket: WebSocket, match_id: str):
         await websocket.accept()

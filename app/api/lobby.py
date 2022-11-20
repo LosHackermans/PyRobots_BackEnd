@@ -3,11 +3,11 @@ from starlette.websockets import WebSocketState
 from app.api.models import *
 from pony.orm import db_session
 from app.rooms import ConnectionManager
-import json
 
 router = APIRouter()
 
 manager = ConnectionManager()
+
 
 def get_room(match_id):
     with db_session:
@@ -20,34 +20,50 @@ def get_room(match_id):
             if (robot_o.robot.user.id == The_Match.user.id):
                 robot_of_the_cretor = robot_o.robot.name
                 robot_of_the_cretor_id = robot_o.robot.id
-                match_creator = {"Owner": The_Match.user.username, "Robot_name": robot_of_the_cretor}
+                match_creator = {"Owner": The_Match.user.username,
+                                 "Robot_name": robot_of_the_cretor}
 
             if (robot_o.robot.id != robot_of_the_cretor_id):
                 robot_name = robot_o.robot.name
                 robot_id = robot_o.robot.id
                 robot_user = Robot.get(lambda r: r.id == robot_id)
                 user_of_the_robot = robot_user.user.username
-                the_player = {"Player": user_of_the_robot, "Robot_name": robot_name}
+                the_player = {"Player": user_of_the_robot,
+                              "Robot_name": robot_name}
                 list_of_players.append(the_player)
     return {"Creator": match_creator, "Players": list_of_players}
+
+
+def execute_match(match_id):
+    return {
+        "result": [
+            {"User": "username", "Robot": "robotname"},
+            {"User": "username", "Robot": "robotname"},
+            {"User": "username", "Robot": "robotname"}
+        ]
+    }
+
 
 @router.websocket("/lobby/{match_id}")
 async def webssocket_endpoint_match(websocket: WebSocket, match_id):
     await manager.connect(websocket, match_id)
-    await manager.broadcast(get_room(match_id), match_id) 
-    while True:
-        if websocket.application_state == WebSocketState.CONNECTED:
-            data = await websocket.receive_text()
-            message_data = json.loads(data)
-        else:
-            manager.disconnect(websocket, match_id)
+    await manager.broadcast({"room" : get_room(match_id)}, match_id)
+    try:
+        while True:
+            if websocket.application_state == WebSocketState.CONNECTED:
+                data = await websocket.receive_text()
+                if data == 'start':
+                    results = execute_match(match_id)
+                    await manager.broadcast(results, match_id)
 
-
-
+    except Exception as e:
+        print(e)
+    finally:
+        await manager.disconnect(websocket, match_id)
 
 # {
 #     Creator:
-#             
+#
 #              {"Owner": player_name, "Robot_name": name},
 #     Players:
 #             [

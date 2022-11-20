@@ -4,9 +4,15 @@ from pony.orm import db_session
 import json
 from pydantic import BaseModel
 from app.get_user import *
-
+import websockets
 
 router = APIRouter()
+
+
+async def start_match_websocket(match_id):
+    async with websockets.connect(f"ws://localhost:8001/lobby/{match_id}") as websocket:
+        await websocket.send("start")
+        await websocket.close()
 
 
 @router.post("/start/{match_id}")
@@ -17,22 +23,12 @@ async def start_match(match_id):
         if The_Match == None:     # no existe el match
             return {'error': 'Invalid X-Token header'}
 
-        match_is_ready_to_start = 2
-        if (match_is_ready_to_start < 2 or match_is_ready_to_start > 4):
-            match_is_ready_to_start = The_Match.robot_in_matches.count()
+        quantity_of_players = The_Match.robot_in_matches.count()
 
+        if (quantity_of_players < The_Match.min_players):
             return {"detail": "The match is not ready to start yet"}
+
         else:
-            #Ejecutar partida, obtener el ganador(ganadores) y devolverlos al web soket!
-            # {"Result": [{"User": "Pepito", "Robot": "Pepitron"}] }
+            await start_match_websocket(match_id)
+            The_Match.is_joinable = False
             return {"detail": "The match has started"}
-
-
-
-    # {
-    #     "Result": [
-    #              {"User": username, "Robot": robotname},
-    #              {"User": username, "Robot": robotname},
-    #              {"User": username, "Robot": robotname}
-    #             ]
-    # }

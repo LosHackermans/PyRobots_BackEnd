@@ -4,16 +4,21 @@ from pony.orm import db_session
 import json
 from pydantic import BaseModel
 from app.get_user import *
-
+import websockets
 
 router = APIRouter()
 
 
+async def conect_websocket(match_id):
+    async with websockets.connect(f"ws://localhost:8001/lobby/{match_id}") as websocket:
+        await websocket.close()
+
+
 @router.post("/abandon/{match_id}")
 async def remove_user_from_match(request: Request, match_id):
-    
+
     with db_session:
-        current_user =  get_user(request.headers)
+        current_user = get_user(request.headers)
         if current_user == None:     # no existe el usuario en la bd o no hay header
             return {'error': 'Invalid X-Token header'}
 
@@ -22,5 +27,7 @@ async def remove_user_from_match(request: Request, match_id):
             for other_robot in current_user.robots:
                 if (robot_o.robot.id == other_robot.id):
                     robot_o.delete()
+        match.is_joinable = True
 
+    await conect_websocket(match_id)
     return {"detail": "User remove successful from the match"}
