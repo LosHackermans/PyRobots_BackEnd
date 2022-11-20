@@ -13,7 +13,9 @@ class verficationModel(BaseModel):
 async def validate_user(user: verficationModel):
     with db_session:
         currentuser = User.get(email=user.email)
-        if currentuser.verify_token == None or currentuser.verify_token != user.token:
+        if currentuser == None:
+            return {"error": "user not exists"}
+        elif currentuser.verify_token != user.token:
             return {"error": "incorrect token"}
         else:
             currentuser.is_validated = True
