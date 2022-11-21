@@ -12,11 +12,14 @@ def get_robot_statistics(id_robot):
 
     games_draw = 0
     games_won = 0
-    games_played = len(robot_games)
+    games_played = 0
 
     for i in robot_games:
-        games_won += i.games_won
-        games_draw += i.games_draw
+        if i.match.is_finished == True:
+            games_won += i.games_won
+            games_draw += i.games_draw
+            games_played += 1
+
 
     return games_won, games_draw, games_played
 
@@ -25,7 +28,6 @@ def get_user_robots(user):
     robots = Robot.select(lambda r: r.user == user).   order_by(
         desc(Robot.name), Robot.id)[:]
     for i in robots:
-        # games_won, games_draw, games_played = 0, 0, 0
         games_won, games_draw, games_played = get_robot_statistics(i)
         list_of_robots.append({"id": i.id, "name": i.name, "avatar": i.avatar, "games_won": games_won, "games_draw": games_draw, "games_played": games_played})
 
