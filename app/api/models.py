@@ -31,6 +31,7 @@ class Match(db.Entity):
     number_rounds = Required(int)
     number_games = Required(int)
     is_joinable = Required(bool)
+    is_finished = Required(bool, default=False)
     password = Optional(str)
     user = Required(User)   #quien la creo
     robot_in_matches = Set('Robot_in_match')

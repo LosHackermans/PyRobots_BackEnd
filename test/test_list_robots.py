@@ -92,9 +92,9 @@ def test_valid_example_with_statistics():
              password = "nuevofamaf", is_validated = True)
         robot_test = Robot(name="robot_1",script="abc",user=User.get(email = "famaf03@gmail.com"))
         match_test_0 = Match(name="match_0", min_players=2, max_players=4,
-              number_rounds=200, number_games=200, is_joinable=True, user=user_test)
+              number_rounds=200, number_games=200, is_joinable=True, is_finished = True, user=user_test)
         match_test_1 = Match(name="match_1", min_players=2, max_players=4,
-              number_rounds=200, number_games=200, is_joinable=True, user=user_test)
+              number_rounds=200, number_games=200, is_joinable=True, is_finished = True, user=user_test)
         Robot_in_match(robot = robot_test, games_won = 10, games_draw = 3, match = match_test_0)
         Robot_in_match(robot = robot_test, games_won = 15, games_draw = 7, match = match_test_1)
 
