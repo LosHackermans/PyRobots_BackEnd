@@ -20,7 +20,9 @@ async def login_user(login_item: LoginItem):
     with db_session:
         if User.exists(email=data["email"]):
             currentUser = User.get(lambda u: u.email == data["email"])
-            if currentUser.password == data["password"]:
+            if not currentUser.is_validated:
+                return {'error': ' not verify'}
+            if currentUser.password == data["password"] :
                 encoded_jwt = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
                 return {'token': encoded_jwt}
             else:
