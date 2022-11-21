@@ -50,7 +50,7 @@ def execute_match(match_id):
         #current_match = Match.get(lambda m: m.id == match_id)
         #for bot_in_game in current_match:
                 #players.append(bot_in_game.robot.script)
-        # play_match = Partida ( participants, 
+        # play_match = Partida ( players, 
         #             {"games": current_match.number_games , "rounds": current_match.number_rounds}
         #                           )
         #
