@@ -21,7 +21,7 @@ async def start_match(match_id):
         The_Match = Match.get(lambda m: m.id == match_id)
 
         if The_Match == None:     # no existe el match
-            return {'error': 'Invalid X-Token header'}
+            return {'error': 'The match does not exist'}
 
         quantity_of_players = The_Match.robot_in_matches.count()
 

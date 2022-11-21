@@ -23,6 +23,10 @@ async def remove_user_from_match(request: Request, match_id):
             return {'error': 'Invalid X-Token header'}
 
         match = Match.get(id=match_id)
+
+        if match == None:     # no existe el match
+            return {'error': 'That match does not exist'}
+
         for robot_o in match.robot_in_matches:
             for other_robot in current_user.robots:
                 if (robot_o.robot.id == other_robot.id):
