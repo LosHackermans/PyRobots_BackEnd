@@ -3,6 +3,7 @@ from starlette.websockets import WebSocketState
 from app.api.models import *
 from pony.orm import db_session
 from app.rooms import ConnectionManager
+from robots.Partida import Partida
 
 router = APIRouter()
 
@@ -43,6 +44,16 @@ def execute_match(match_id):
         ]
     }
 
+    #players = []
+    #with db_session:
+        #current_match = Match.get(lambda m: m.id == match_id)
+        #for bot_in_game in current_match:
+                #players.append(bot_in_game.robot.script)
+        # play_match = Partida ( participants, 
+        #             {"games": current_match.number_games , "rounds": current_match.number_rounds}
+        #                           )
+        #
+        #return {"result": play_match}
 
 @router.websocket("/lobby/{match_id}")
 async def webssocket_endpoint_match(websocket: WebSocket, match_id):
