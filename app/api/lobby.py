@@ -44,6 +44,7 @@ def execute_match(match_id):
         ]
     }
 
+    #Descomentar esto para ejecutar el match
     #players = []
     #with db_session:
         #current_match = Match.get(lambda m: m.id == match_id)
