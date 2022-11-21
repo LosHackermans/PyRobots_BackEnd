@@ -54,7 +54,8 @@ def execute_match(match_id):
         #             {"games": current_match.number_games , "rounds": current_match.number_rounds}
         #                           )
         #
-        #return {"result": play_match}
+        #play_match.run()
+        #return {"result": play_match.get_results()}
 
 @router.websocket("/lobby/{match_id}")
 async def webssocket_endpoint_match(websocket: WebSocket, match_id):

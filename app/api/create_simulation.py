@@ -38,4 +38,5 @@ async def create_simulation(simu: simulationModel):
             robots_query = Robot.select(lambda r: r.id in simu.robots)
             robots_paths = [robot.script for robot in list(robots_query)]
             game = Juego(robots_paths, simu.rounds)
+            game.run()
             return game.get_results()
