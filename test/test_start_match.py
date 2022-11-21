@@ -7,6 +7,24 @@ from app.api.models import *
 client = TestClient(app)
 
 
+SECRET_KEY = "my_secret_key"
+ALGORITHM = "HS256"
+dummy_user = {
+    "email": "famaf01@gmail.com",
+    "password": "nuevofamaf"
+}
+dummy_user2 = {
+    "email": "famaf02@gmail.com",
+    "password": "nuevofamaf"
+}
+encoded_jwt = jwt.encode(dummy_user, SECRET_KEY, algorithm=ALGORITHM)
+encoded = encoded_jwt.decode("utf-8")
+
+encoded_jwt2 = jwt.encode(dummy_user2, SECRET_KEY, algorithm=ALGORITHM)
+encoded2 = encoded_jwt2.decode("utf-8")
+
+
+
 def test_invalid_match():
 
     response = client.post(
