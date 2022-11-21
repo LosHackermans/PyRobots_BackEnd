@@ -59,7 +59,7 @@ async def signup(user: signUpModel):
         verify_token = ''.join(random.choice('0123456789ABCDEF') for i in range(7))
         
         html = f"""<p>Hi,thanks for signing up for pyrobots! Your verification code is: {verify_token} </p>
-                  <p> http://localhost/validate_user </p>"""
+                  <p> http://localhost:3000/verify_user </p>"""
         email_s1 = EmailStr(user.email)
         list_emails =[]
         list_emails.append(email_s1)
