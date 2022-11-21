@@ -3,18 +3,19 @@ from robots.Juego import *
 class Partida:
     def __init__(self, bot_list, config_partida):
         self.bot_list = bot_list
-        self.scores, self.players = parse_bot_list(bot_list)        
+        self.scores, self.players = parse_bot_list(bot_list)
         self.games = config_partida["games"]
         self.game_rounds = config_partida["rounds"]
         
     def run(self):
         for i in range(self.games):
-            game = Juego(self.bot_list, self.game_rounds)
-            #game.run_game()
-            winner = game.get_results(simulacion = False)
+            game = Juego(self.bot_list, self.game_rounds, is_simulation = False)
+            game.run()
+            winner = game.get_results()
             self.scores[f"{winner}"] += 1
 
-        self.scores["EMPATE"] = 0
+    def get_results(self):
+        self.scores["EMPATE"] = -1
         #Descomentar esto para que haya más de un ganador (o sea, empate de partida)
         #self.scores["CircleBot"] = 4
         #self.scores["SquareBot"] = 4
@@ -40,7 +41,8 @@ def parse_bot_list(bot_list):
 
 
 if __name__=="__main__":
-    p = Partida(["robots/files/admin/CircleBot.py", "robots/files/admin1/SquareBot.py", "robots/files/admin2/SuperMegaRobot.py"], {"games":10, "rounds":200})
-    print(p.run())
+    p = Partida(["robots/files/admin/CircleBot.py", "robots/files/admin1/SquareBot.py", "robots/files/admin2/SuperMegaRobot.py"], {"games":10, "rounds":100})
+    p.run()
+    print(p.get_results())
     
 

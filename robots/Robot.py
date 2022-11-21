@@ -1,3 +1,5 @@
+from robots.Scanner import scan_enemies
+
 class Robot:
 #Funciones auxiliares, el usuario no las conoce    
     def __init__(self, pos_x, pos_y):
@@ -57,6 +59,9 @@ class Robot:
             self.data["shot_last_round"] = False
         else:
             self.data["cannon_ready"] = True
+            
+    def scan(self, enemies): 
+        self.data["scanned"] = scan_enemies(self.get_position(), enemies, self.data["scanner_direction"], self.data["scanner_resolution"])
 
     def __es_numero(self, a):
         return (type(a) == int or type(a) == float) and a >= 0

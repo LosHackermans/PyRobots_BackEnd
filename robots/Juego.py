@@ -4,9 +4,8 @@ from robots.Missile import Missile
 from random import randrange
 from math import cos, sin, pi
 from robots.GameState import *
-from robots.Scanner import scan_enemies
 
-MAX_SPEED = 100
+MAX_SPEED = 25
 WALL_DAMAGE = 10
 
 def to_rads(x):
@@ -19,13 +18,15 @@ self.bot = {}({}, {})
 
 class Juego:
     
-    def __init__(self, bot_list, rounds):
+    def __init__(self, bot_list, rounds, is_simulation = True):
         self.bot_list = bot_list
         self.rounds = rounds
         self.missiles = []
         self.robots = []
-        self.game_state = GameState()
-        self.run_game()
+        
+        self.simulation = is_simulation
+        if self.simulation:
+            self.game_state = GameState()
         
     def instantiate_bots(self):
         for filestring in self.bot_list:
@@ -39,7 +40,7 @@ class Juego:
         for bot in self.robots:
             bot.initialize()
     
-    def run_game(self):
+    def run(self):
         self.instantiate_bots()
         self.initialize_bots()
         for i in range(self.rounds):
@@ -49,7 +50,8 @@ class Juego:
             self.shoot_cannons()
             self.update_missiles()
             self.reload_cannons()
-            self.game_state.commit_game_state()
+            if self.simulation:
+                self.game_state.commit_game_state()
     
     def respond_bots(self):
         for bot in self.robots:
@@ -79,7 +81,8 @@ class Juego:
                 next_y = 0
             ##TODO buscar una forma mas fancy de hacer esto, tipo max(0, min(1000, prev_x)) o extraer el método
             bot.set_position(next_x, next_y)
-            self.game_state.add_bot(bot.get_id(), bot.get_position(), 100 - bot.get_damage())
+            if self.simulation:
+                self.game_state.add_bot(bot.get_id(), bot.get_position(), 100 - bot.get_damage())
         
     def update_scanners(self):
         for bot in self.robots:
@@ -87,7 +90,7 @@ class Juego:
             for e in self.robots:
                 if e.get_position() != bot.get_position():
                     enemy_positions.append(e.get_position())
-            bot.data["scanned"] = scan_enemies(bot.get_position(), enemy_positions, bot.data["scanner_direction"], bot.data["scanner_resolution"])
+            bot.scan(enemy_positions)
 
 
     def shoot_cannons(self):
@@ -105,13 +108,14 @@ class Juego:
     def update_missiles(self):
         for missile in self.missiles:
             status = missile.update()
-            self.game_state.add_missile(missile.get_position(), status[0])
+            if self.simulation:
+                self.game_state.add_missile(missile.get_position(), status[0])
             if status[0]:
                 for bot in self.robots:
                     bot.receive_damage(missile.explosion_damage(bot.get_position()))
                 self.missiles.remove(missile)
                 
-    def get_results(self, simulacion = True):
+    def get_results(self):
         winning_bots = []
         winner = ""
         for bot in self.robots:
@@ -122,10 +126,10 @@ class Juego:
         else:
             winner = "EMPATE"
             
-        return self.game_state.produce_final_json() if simulacion else winner
+        return self.game_state.produce_final_json() if self.simulation else winner
 
 
 if __name__ == "__main__":
-    game = Juego(["robots/files/admin/CircleBot.py", "robots/files/admin/SquareBot.py", "robots/files/admin/SuperMegaRobot.py"], 10)
-    #game.run_game()
-    print(game.get_results(simulacion = False))
+    game = Juego(["robots/files/admin/CircleBot.py", "robots/files/admin/SquareBot.py", "robots/files/admin/SuperMegaRobot.py"], 10, False)
+    game.run()
+    print(game.get_results())
