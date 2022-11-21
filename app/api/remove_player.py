@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 async def conect_websocket(match_id):
-    async with websockets.connect(f"ws://localhost:8001/lobby/{match_id}") as websocket:
+    async with websockets.connect(f"ws://localhost:8000/lobby/{match_id}") as websocket:
         await websocket.close()
 
 
