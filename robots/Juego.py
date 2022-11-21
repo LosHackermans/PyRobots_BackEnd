@@ -4,6 +4,7 @@ from robots.Missile import Missile
 from random import randrange
 from math import cos, sin, pi
 from robots.GameState import *
+from robots.Scanner import scan_enemies
 
 MAX_SPEED = 100
 WALL_DAMAGE = 10
@@ -47,6 +48,7 @@ class Juego:
             self.update_scanners()
             self.shoot_cannons()
             self.update_missiles()
+            self.reload_cannons()
             self.game_state.commit_game_state()
     
     def respond_bots(self):
@@ -78,31 +80,36 @@ class Juego:
             ##TODO buscar una forma mas fancy de hacer esto, tipo max(0, min(1000, prev_x)) o extraer el método
             bot.set_position(next_x, next_y)
             self.game_state.add_bot(bot.get_id(), bot.get_position(), 100 - bot.get_damage())
-            #print(f"bot {bot} movido de ({prev_x}, {prev_y}) a ({next_x}, {next_y}), mov= ({direction}, {speed})")
         
     def update_scanners(self):
-        i=0
-        #print("-------UPDATE SCANNERS")
+        for bot in self.robots:
+            enemy_positions = []
+            for e in self.robots:
+                if e.get_position() != bot.get_position():
+                    enemy_positions.append(e.get_position())
+            bot.data["scanned"] = scan_enemies(bot.get_position(), enemy_positions, bot.data["scanner_direction"], bot.data["scanner_resolution"])
+
 
     def shoot_cannons(self):
         for bot in self.robots:
             if bot.is_cannon_ready() and bot.data["intends_to_shoot"]:
                 x, y = bot.get_position()
                 self.missiles.append(Missile(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"]))
-                #print("cannon shot from ({}, {}) with direction {} and distance {}".format(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"]))
+                bot.data["intends_to_shoot"] = False
+                bot.spend_cannon()
+    
+    def reload_cannons(self):
+        for bot in self.robots:
+            bot.reload_cannons()
         
     def update_missiles(self):
         for missile in self.missiles:
             status = missile.update()
             self.game_state.add_missile(missile.get_position(), status[0])
             if status[0]:
-                #print(f"missile exploded at ({status[1]}, {status[2]})")
-                #impacts
                 for bot in self.robots:
                     bot.receive_damage(missile.explosion_damage(bot.get_position()))
                 self.missiles.remove(missile)
-            #else:
-                #print(f"missile traveling at ({status[1]}, {status[2]}) with direction {missile.direction}, remaining travel {missile.remaining_distance}")
                 
     def get_results(self, simulacion = True):
         winning_bots = []
@@ -120,4 +127,5 @@ class Juego:
 
 if __name__ == "__main__":
     game = Juego(["robots/files/admin/CircleBot.py", "robots/files/admin/SquareBot.py", "robots/files/admin/SuperMegaRobot.py"], 10)
+    #game.run_game()
     print(game.get_results(simulacion = False))
