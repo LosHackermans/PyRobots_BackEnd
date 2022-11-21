@@ -8,9 +8,9 @@ class GameState:
     def add_bot(self, bot_id, bot_pos, bot_health):
         self.bot_strings.append({"id": bot_id, "x": bot_pos[0], "y": bot_pos[1], "life": bot_health})
         
-    def add_missile(self, missile_pos, exploded):
-        self.missile_strings.append({"x": missile_pos[0], "y": missile_pos[1], "exploded": exploded})
-        
+    def add_missile(self, missile_pos, exploded, shooter):
+        self.missile_strings.append({"x": missile_pos[0], "y": missile_pos[1],
+                                        "exploded": exploded, "shooter": shooter})
         
     def commit_game_state(self): 
         state_string = ""

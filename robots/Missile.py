@@ -7,11 +7,12 @@ def to_rads(x):
     return x * (pi / 180)
 
 class Missile:
-    def __init__(self, x, y, direction, distance):
+    def __init__(self, x, y, direction, distance, shooter):
         self.pos = (x, y)
         self.direction = direction
         self.remaining_distance = distance
         self.exploded = False
+        self.shooter = shooter
         
     def update(self):
         prev_x = self.pos[0]

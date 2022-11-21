@@ -97,7 +97,7 @@ class Juego:
         for bot in self.robots:
             if bot.is_cannon_ready() and bot.data["intends_to_shoot"]:
                 x, y = bot.get_position()
-                self.missiles.append(Missile(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"]))
+                self.missiles.append(Missile(x, y, bot.data["cannon_degree"], bot.data["cannon_distance"], bot.get_id()))
                 bot.data["intends_to_shoot"] = False
                 bot.spend_cannon()
     
@@ -109,7 +109,7 @@ class Juego:
         for missile in self.missiles:
             status = missile.update()
             if self.simulation:
-                self.game_state.add_missile(missile.get_position(), status[0])
+                self.game_state.add_missile(missile.get_position(), status[0], missile.shooter)
             if status[0]:
                 for bot in self.robots:
                     bot.receive_damage(missile.explosion_damage(bot.get_position()))
