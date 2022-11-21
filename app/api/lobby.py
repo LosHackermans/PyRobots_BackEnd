@@ -48,9 +48,11 @@ def execute_match(match_id):
     #players = []
     #with db_session:
         #current_match = Match.get(lambda m: m.id == match_id)
-        #for bot_in_game in current_match:
-                #players.append(bot_in_game.robot.script)
-        # play_match = Partida ( players, 
+
+        #robots_query = Robot.select(lambda r: r.id in current_match.robot_in_matches)
+        #robots_paths = [robot.script for robot in list(robots_query)]
+        #
+        # play_match = Partida ( robots_paths, 
         #             {"games": current_match.number_games , "rounds": current_match.number_rounds}
         #                           )
         #
