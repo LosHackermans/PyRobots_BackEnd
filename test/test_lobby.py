@@ -12,15 +12,15 @@ client = TestClient(app)
 
 def test_get_room():
     with db_session:
-        user_test = User(username = "pedro", email = "famaf01@gmail.com",
-             password = "nuevofamaf", is_validated = True)
+        user_test = User(username = "pedro789", email = "famaf295@gmail.com",
+             password = "nuevofamaf358", is_validated = True)
         #user_test2 = User(username="ej", email="pepito@gmail.com",
         #         password="abc", is_validated=True)
 
-        user_robot =Robot(name="robot", script="abc", user=User.get(email="famaf01@gmail.com"))
+        user_robot =Robot(name="robot1220", script="abc3453", user=User.get(email="famaf295@gmail.com"))
         #user_robot2 = Robot(name="robot2", script="abcd", user=User.get(email="pepito@gmail.com"))
 
-        current_match = Match(name= "testMatch", min_players= 2,
+        current_match = Match(name= "is_testMatch", min_players= 2,
             max_players= 4, number_rounds= 100, 
             number_games= 100, is_joinable=True,
             password= "testPassword",
@@ -30,13 +30,12 @@ def test_get_room():
 
     assert get_room(current_match.id) == {"Creator": {"Owner": user_test.username,
                                  "Robot_name": user_robot.name}, "Players": []}
-
-
     with db_session:
         #delete(u for u in User if u.email == "pepito@gmail.com")
-        delete(u for u in User if u.email == "famaf01@gmail.com")
-        delete(r for r in Robot if r.name == "robot")
+        delete(u for u in User if u.email == "famaf295@gmail.com")
+        delete(r for r in Robot if r.name == "robot1220")
         #delete(r for r in Robot if r.name == "robot2")
+        delete(r for r in Match if r.name == "is_testMatch")
 
 
 # def test_execute_match():

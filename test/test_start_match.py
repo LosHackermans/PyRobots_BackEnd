@@ -20,12 +20,12 @@ def test_invalid_match():
     
 def test_not_ready_yet():
     with db_session:
-        user_test = User(username = "gatito23", email = "famaf52@gmail.com", password = "nuevofamaf", is_validated = True)
-        user_robot =  Robot(name="robot1",script="abc",user=user_test)
-        current_match = Match(name= "testMatch35", min_players= 2,
+        user_test = User(username = "gatito23", email = "tero23@gmail.com", password = "nuevofamaf256", is_validated = True)
+        user_robot =  Robot(name="robot156",script="abc123",user=user_test)
+        current_match = Match(name= "resting", min_players= 2,
             max_players= 4, number_rounds= 100, 
             number_games= 100, is_joinable=True,
-            password= "testPassword",
+            password= "prueba22",
             user= user_test)
 
         Robot_in_match(robot = user_robot, games_won = 0, games_draw = 0, match = current_match)
@@ -36,9 +36,12 @@ def test_not_ready_yet():
     assert response.status_code == 200
     assert response.json() ==  {"detail": "The match is not ready to start yet"}
     with db_session:
-        delete(r for r in Robot if r.name == "robot1")
+        delete(r for r in Robot if r.name == "robot156")
         delete(r for r in User if r.username == "gatito23")
-        delete(r for r in Match if r.name == "testMatch35")
+        delete(r for r in Match if r.name == "resting")
+
+
+
 
 
 # def test_correct_number_of_players():
