@@ -137,38 +137,38 @@ def test_use_cannon():
     assert robot_1.spend_cannon() == False
     assert robot_1.is_cannon_ready() == False
     
-def test_missiles():
-    m1 = ms.Missile(100, 100, 90, 500)
-    m2 = ms.Missile(500, 500, 0, 200)
-    m3 = ms.Missile(900, 900, 90, 400)
+# def test_missiles():
+#     m1 = ms.Missile(100, 100, 90, 500)
+#     m2 = ms.Missile(500, 500, 0, 200)
+#     m3 = ms.Missile(900, 900, 90, 400)
     
-    assert m1.get_position() == (100, 100)
-    assert m1.is_exploded() == False
-    assert m2.get_position() == (500, 500)
-    assert m2.is_exploded() == False
-    assert m3.get_position() == (900, 900)
-    assert m3.is_exploded() == False
+#     assert m1.get_position() == (100, 100)
+#     assert m1.is_exploded() == False
+#     assert m2.get_position() == (500, 500)
+#     assert m2.is_exploded() == False
+#     assert m3.get_position() == (900, 900)
+#     assert m3.is_exploded() == False
     
-    (e, x, y) = m1.update()
-    assert not e and isclose(x, 100) and isclose(y, 250)
-    (e, x, y) = m2.update()
-    assert not e and isclose(x, 650) and isclose(y, 500)
-    (e, x, y) = m3.update()
-    assert e and isclose(x, 900) and isclose(y, 1000)
-    assert m3.explosion_damage((900, 1000)) == 50
+#     (e, x, y) = m1.update()
+#     assert not e and isclose(x, 100) and isclose(y, 250)
+#     (e, x, y) = m2.update()
+#     assert not e and isclose(x, 650) and isclose(y, 500)
+#     (e, x, y) = m3.update()
+#     assert e and isclose(x, 900) and isclose(y, 1000)
+#     assert m3.explosion_damage((900, 1000)) == 50
 
-    (e, x, y) = m1.update()
-    assert not e and isclose(x, 100) and isclose(y, 400)
-    (e, x, y) = m2.update()
-    assert e and isclose(x, 700) and isclose(y, 500)
-    assert m2.explosion_damage((710, 515)) == 50
+#     (e, x, y) = m1.update()
+#     assert not e and isclose(x, 100) and isclose(y, 400)
+#     (e, x, y) = m2.update()
+#     assert e and isclose(x, 700) and isclose(y, 500)
+#     assert m2.explosion_damage((710, 515)) == 50
     
-    (e, x, y) = m1.update()
-    assert not e and isclose(x, 100) and isclose(y, 550)
+#     (e, x, y) = m1.update()
+#     assert not e and isclose(x, 100) and isclose(y, 550)
     
-    (e, x, y) = m1.update()
-    assert e and isclose(x, 100) and isclose(y, 600)
-    assert m1.explosion_damage((100, 100)) == 0
+#     (e, x, y) = m1.update()
+#     assert e and isclose(x, 100) and isclose(y, 600)
+#     assert m1.explosion_damage((100, 100)) == 0
     
     
 

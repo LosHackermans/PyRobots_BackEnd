@@ -41,15 +41,16 @@ def execute_match(match_id):
     with db_session:
        current_match = Match.get(lambda m: m.id == match_id)
 
-       robots_query = Robot.select(lambda r: r.id in current_match.robot_in_matches)
+       robots_query = Robot.select(lambda r: r in current_match.robot_in_matches.robot)
        robots_paths = [robot.script for robot in list(robots_query)]
-        
+    
        play_match = Partida ( robots_paths, 
                     {"games": current_match.number_games , "rounds": current_match.number_rounds}
                                   )
         
        play_match.run()
        return {"result": play_match.get_results()}
+        #return {"result": "Pedrito", "robot": "pedritron"}
 
 @router.websocket("/lobby/{match_id}")
 async def webssocket_endpoint_match(websocket: WebSocket, match_id):
