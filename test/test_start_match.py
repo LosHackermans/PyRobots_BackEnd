@@ -47,7 +47,7 @@ def test_not_ready_yet():
 # def test_correct_number_of_players():
 #     with db_session:
 #         user_test = User(username = "testUser", email = "testUser@gmail.com", password = "testUser", is_validated = True)
-#         Robot(name="robot1",script="abc",user=user_test)
+#         Robot(name="robot15689",script="abc",user=user_test)
 #         current_match = Match(name= "testMatch", min_players= 2,
 #             max_players= 2, number_rounds= 100, 
 #             number_games= 100, is_joinable=True,
