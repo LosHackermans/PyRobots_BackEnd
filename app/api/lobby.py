@@ -53,10 +53,10 @@ def execute_match(match_id):
         
     #     play_match = Partida ( robots_paths, 
     #                 {"games": current_match.number_games , "rounds": current_match.number_rounds}
-                                   )
+    #                               )
         
-        play_match.run()
-        return {"result": play_match.get_results()}
+        #play_match.run()
+        #return {"result": play_match.get_results()}
 
 @router.websocket("/lobby/{match_id}")
 async def webssocket_endpoint_match(websocket: WebSocket, match_id):
