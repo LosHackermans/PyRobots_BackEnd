@@ -36,23 +36,23 @@ def get_room(match_id):
 
 
 def execute_match(match_id):
-    #return {
-    #    "result": [
-    #        {"User": "username", "Robot": "robotname"},
-    #        {"User": "username", "Robot": "robotname"},
-    #        {"User": "username", "Robot": "robotname"}
-    #    ]
-    #}
+    return {
+        "result": [
+            {"User": "username", "Robot": "robotname"},
+            {"User": "username", "Robot": "robotname"},
+            {"User": "username", "Robot": "robotname"}
+        ]
+    }
 
     #Descomentar esto para ejecutar el match
-    with db_session:
-        current_match = Match.get(lambda m: m.id == match_id)
+    #with db_session:
+    #    current_match = Match.get(lambda m: m.id == match_id)
 
-        robots_query = Robot.select(lambda r: r.id in current_match.robot_in_matches)
-        robots_paths = [robot.script for robot in list(robots_query)]
+    #    robots_query = Robot.select(lambda r: r.id in current_match.robot_in_matches)
+    #    robots_paths = [robot.script for robot in list(robots_query)]
         
-         play_match = Partida ( robots_paths, 
-                     {"games": current_match.number_games , "rounds": current_match.number_rounds}
+    #     play_match = Partida ( robots_paths, 
+    #                 {"games": current_match.number_games , "rounds": current_match.number_rounds}
                                    )
         
         play_match.run()
