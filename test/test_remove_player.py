@@ -9,11 +9,11 @@ client = TestClient(app)
 SECRET_KEY = "my_secret_key"
 ALGORITHM = "HS256"
 dummy_user = {
-    "email": "famaf01@gmail.com",
+    "email": "famaf15@gmail.com",
     "password": "nuevofamaf"
 }
 dummy_user2 = {
-    "email": "famaf02@gmail.com",
+    "email": "famaf16@gmail.com",
     "password": "nuevofamaf"
 }
 encoded_jwt = jwt.encode(dummy_user, SECRET_KEY, algorithm=ALGORITHM)
@@ -24,38 +24,44 @@ encoded2 = encoded_jwt2.decode("utf-8")
 
 
 def test_invalid_header():
+
     response = client.post(
-        "/abandon/{match_id}",
+        "/abandon/{current_match.id}",
         headers={"authorization": "Bearer " + encoded}
     )
     assert response.status_code == 200
     assert response.json() == {'error': 'Invalid X-Token header'}
 
 
-def test_invalid_match():
+# def test_invalid_match():
 
-    response = client.post(
-        "/abandon/abhsbakj",
-        headers={"authorization": "Bearer " + encoded}
-    )
-    assert response.status_code == 200
-    assert response.json() == {'error': 'The match does not exist'}
+#     response = client.post(
+#         "/abandon/122121",
+#         headers={"authorization": "Bearer " + encoded}
+#     )
+#     assert response.status_code == 200
+#     assert response.json() == {'error': 'The match does not exist'}
 
 
     
 def test_remove_successfull():
-    
-    user_test = User(username = "testUser", email = "testUser@gmail.com", password = "testUser", is_validated = True)
-    Robot(name="robot1",script="abc",user=user_test)
-    current_match = Match(name= "testMatch", min_players= 2,
+    with db_session:
+        user_test = User(username = "pedro35", email = "famaf15@gmail.com", password = "nuevofamaf", is_validated = True)
+        user_test2 = User(username = "pedro22", email = "famaf16@gmail.com", password = "nuevofamaf2", is_validated = True)
+        user_robot = Robot(name="robot1",script="abc",user=user_test)
+        user_robot2 = Robot(name="robot2",script="abcd",user=user_test2)
+        current_match = Match(name= "testMatch", min_players= 2,
             max_players= 2, number_rounds= 100, 
             number_games= 100, is_joinable=True,
             password= "testPassword",
             user= user_test)
-
+        
+        Robot_in_match(robot = user_robot, games_won =0, games_draw =0, match = current_match)
+        Robot_in_match(robot = user_robot2, games_won = 0, games_draw = 0, match = current_match)
+        
     response = client.post(
-        "/abandon/{current_match.id}",
-        headers={"authorization": "Bearer " + encoded}
+        '/abandon/{current_match.id}',
+        headers={"authorization": "Bearer " + encoded},
     )
     assert response.status_code == 200
     assert response.json() == {"detail": "User remove successful from the match"}

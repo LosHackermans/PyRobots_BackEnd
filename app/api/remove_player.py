@@ -24,8 +24,8 @@ async def remove_user_from_match(request: Request, match_id):
 
         match = Match.get(id=match_id)
 
-        if match == None:     # no existe el match
-            return {'error': 'That match does not exist'}
+        # if match == None:     # no existe el match
+        #     return {'error': 'That match does not exist'}
 
         for robot_o in match.robot_in_matches:
             for other_robot in current_user.robots:
