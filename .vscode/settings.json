@@ -1,0 +1,17 @@
+{
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "database-pyrobots",
+            "database": "${workspaceFolder:PyRobots_BackEnd}/database.sqlite"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "database",
+            "database": "${workspaceFolder:PyRobots_BackEnd}/app/api/database.sqlite"
+        }
+    ]
+}

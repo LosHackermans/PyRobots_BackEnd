@@ -1,7 +1,7 @@
 from math import cos, sin, pi, sqrt
-MISSILE_SPEED = 150
-EXPLOSION_RADIUS = 25
-EXPLOSION_DAMAGE = 50
+MISSILE_SPEED = 50
+EXPLOSION_RADIUS = 100
+EXPLOSION_DAMAGE = 25
 
 def to_rads(x):
     return x * (pi / 180)

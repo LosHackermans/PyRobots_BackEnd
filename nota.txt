@@ -1,0 +1,18 @@
+cosas buenas:
+- cumplimos con lo basico en todas las etapas,
+- corregimos etapas anteriores
+- cumplimos con la infrastructura 
+- familiarizados con las nuevas tecnologias y librerias 
+
+cosas malas:
+- fallamos en crear los tickets y en sus criterios de aceptacion 
+- mas organizacion en programar las reuniones y cumplir con ello
+- dejamos muchas cosas para el ultimo
+- mejor comunicacion del back y el front en el endpoint especifico 
+- cumplir con los reviwes de ticket 
+
+cosas para cambiar:
+- todos los dias a las 9 AM avsiar que hicimos el dia anterior y que vamos a hacer ese dia  
+- cada uno al leer su ticket sino entiende algo, pregunta al PO 
+- luego de entender el ticket comunicarse con el encargado de realizar el ticket espejo del back/front
+- completar (mergear) los tickets de forma lineal y ordenada 

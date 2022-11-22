@@ -13,7 +13,7 @@ class CircleBot(Robot):
     def respond(self):
         super().drive(self.direction, 30)
         self.direction = (self.direction + 10) % 360
-        super().cannon(180, 600)
+        super().cannon(self.direction, 300)
   """
 
 CircleBot = Body(
