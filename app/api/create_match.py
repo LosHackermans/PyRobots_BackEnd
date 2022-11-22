@@ -39,7 +39,7 @@ async def user_creatematch(body: BodyMatch, request: Request):
             match = Match(name=body.name, min_players=body.min_players,
                           max_players=body.max_players, number_rounds=body.number_of_rounds,
                           number_games=body.number_of_games, is_joinable=True,
-                          password=body.password,
+                          is_finished =False, password=body.password,
                           user=curent_user)
                           
             Robot_in_match(robot=Robot[body.id_robot], games_won=0,

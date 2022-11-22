@@ -30,7 +30,7 @@ def test_create_user():
         '/create_user',
         json = {
                 "username": "Juan8",
-                "email": "juanpereez@gmail.co8",
+                "email": "pyrobotsok@gmail.com",
                 "password": "password",
                 "avatar": "asdasd"
                 #"passwordRepeated": "password"
@@ -39,7 +39,6 @@ def test_create_user():
     assert response.json() == {"message": "User created successfully"}
     with db_session:
         delete(u for u in User if u.username == "Juan8")
-
 
 def test_repeated_username():
     with db_session:

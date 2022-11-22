@@ -1,17 +1,18 @@
 from math import cos, sin, pi, sqrt
-MISSILE_SPEED = 250
-EXPLOSION_RADIUS = 30
+MISSILE_SPEED = 150
+EXPLOSION_RADIUS = 25
 EXPLOSION_DAMAGE = 50
 
 def to_rads(x):
     return x * (pi / 180)
 
 class Missile:
-    def __init__(self, x, y, direction, distance):
+    def __init__(self, x, y, direction, distance, shooter):
         self.pos = (x, y)
         self.direction = direction
         self.remaining_distance = distance
         self.exploded = False
+        self.shooter = shooter
         
     def update(self):
         prev_x = self.pos[0]
@@ -42,7 +43,6 @@ class Missile:
         dist_to_center = sqrt((abs(self.pos[0] - target_pos[0]))**2 + (abs(self.pos[1] - target_pos[1]))**2)
         return EXPLOSION_DAMAGE if dist_to_center <= EXPLOSION_RADIUS else 0
         
-
     def get_position(self):
         return self.pos
 
