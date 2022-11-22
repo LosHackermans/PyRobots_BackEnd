@@ -51,18 +51,18 @@ def test_invalid_header():
     
 def test_remove_successfull():
     with db_session:
-        user_test321 = User(username = "benicio35", email = "guerra15@gmail.com", password = "le_nuevofamaf", is_validated = True)
-        user_test245 = User(username = "suero22", email = "tumbar16@gmail.com", password = "il_nuevofamaf2", is_validated = True)
-        user_robot = Robot(name="robot1330",script="ueurywirw",user=user_test321)
-        user_robot2 = Robot(name="robot2809",script="ofisp4323",user=user_test245)
+        testeado_user = User(username = "benicio35", email = "guerra15@gmail.com", password = "le_nuevofamaf", is_validated = True)
+        perrito_mal = User(username = "suero22", email = "tumbar16@gmail.com", password = "il_nuevofamaf2", is_validated = True)
+        el_robot = Robot(name="robot1330",script="ueurywirw",user=testeado_user)
+        tu_robot = Robot(name="robot2809",script="ofisp4323",user=perrito_mal)
         current_match = Match(name= "not_this", min_players= 2,
             max_players= 4, number_rounds= 100, 
             number_games= 100, is_joinable=True,
             password= "testPassword",
-            user= user_test321)
+            user= testeado_user)
         
-        Robot_in_match(robot = user_robot, games_won = 0, games_draw = 0, match = current_match)
-        Robot_in_match(robot = user_robot2, games_won = 0, games_draw = 0, match = current_match)
+        Robot_in_match(robot = el_robot, games_won = 0, games_draw = 0, match = current_match)
+        Robot_in_match(robot = tu_robot, games_won = 0, games_draw = 0, match = current_match)
         
     response = client.post(
         '/abandon/{current_match.id}',

@@ -9,8 +9,8 @@ client = TestClient(app)
 SECRET_KEY = "my_secret_key"
 ALGORITHM = "HS256"
 dummy_user = {
-    "email": "famaf75@gmail.com",
-    "password": "nuevofamaf"
+    "email": "guit@gmail.com",
+    "password": "tusergio345"
 }
 
 
@@ -33,7 +33,7 @@ def test_invalid_header():
 def test_get_profile_data():
 
     with db_session:
-        User(username = "sergio45", email = "famaf75@gmail.com", password = "nuevofamaf", avatar = "", is_validated = True)
+        User(username = "sergio45", email = "guit@gmail.com", password = "tusergio345", avatar = "", is_validated = True)
     
     response = client.get(
         "/profile" ,
@@ -42,7 +42,7 @@ def test_get_profile_data():
 
     data_name = {
             "username": "sergio45",
-            "email": "famaf75@gmail.com",
+            "email": "guit@gmail.com",
             "avatar":  "" #puede ser Vacio
         }
     assert response.status_code == 200

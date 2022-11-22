@@ -46,26 +46,26 @@ def test_not_ready_yet():
 
 # def test_correct_number_of_players():
 #     with db_session:
-#         user_test = User(username = "testUser", email = "testUser@gmail.com", password = "testUser", is_validated = True)
-#         Robot(name="robot15689",script="abc",user=user_test)
-#         current_match = Match(name= "testMatch", min_players= 2,
+#         new_user_t = User(username = "fair_user", email = "juego34@gmail.com", password = "serioleta", is_validated = True)
+#         Robot(name="robot15689",script="abcakjhdka",user=new_user_t)
+#         le_nuevo_m = Match(name= "new_m_t", min_players= 2,
 #             max_players= 2, number_rounds= 100, 
 #             number_games= 100, is_joinable=True,
 #             password= "testPassword",
-#             user= user_test)
+#             user= new_user_t)
 
-#         user_test_2 = User(username = "testUser2", email = "testUser2@gmail.com", password = "testUser2", is_validated = True)
-#         robot_test_2 = Robot(name="robot2",script="abc",user=user_test_2)
+#         never_user2 = User(username = "never_user", email = "nvu@gmail.com", password = "neveruser2", is_validated = True)
+#         never_bot2 = Robot(name="no_bot2",script="abciuytr",user=never_user2)
 
     
 #     response = client.post(
-#         '/start/{current_match.id}')
+#         '/start/{le_nuevo_m.id}')
     
 #     assert response.status_code == 200
 #     assert response.json() == {"detail": "The match has started"}
 #     with db_session:
-#         delete(r for r in Robot if r.name == "robot1")
-#         delete(r for r in Robot if r.name == "robot2")
-#         delete(r for r in User if r.username == "testUser")
-#         delete(r for r in User if r.username == "testUser2")
-#         delete(r for r in Match if r.name == "testMatch")
+#         delete(r for r in Robot if r.name == "robot15689")
+#         delete(r for r in Robot if r.name == "no_bot2")
+#         delete(r for r in User if r.username == "fair_user")
+#         delete(r for r in User if r.username == "never_user")
+#         delete(r for r in Match if r.name == "new_m_t")
