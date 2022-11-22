@@ -64,5 +64,5 @@ async def join_match(match: JoinMatchModel):
         if number_of_robots == current_match.max_players:
             current_match.is_joinable = False
 
-    return {"message": "User joined successfully"}
+    return {'match_id': current_match.id}
 
