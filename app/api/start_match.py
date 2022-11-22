@@ -31,5 +31,5 @@ async def start_match(match_id):
         else:
             await start_match_websocket(match_id)
             The_Match.is_joinable = False
-            The_Match.is_finished = True
+            #The_Match.is_finished = True
             return {"detail": "The match has started"}
