@@ -23,7 +23,7 @@ def test_not_ready_yet():
         user_test = User(username = "gatito23", email = "famaf52@gmail.com", password = "nuevofamaf", is_validated = True)
         user_robot =  Robot(name="robot1",script="abc",user=user_test)
         current_match = Match(name= "testMatch35", min_players= 2,
-            max_players= 2, number_rounds= 100, 
+            max_players= 4, number_rounds= 100, 
             number_games= 100, is_joinable=True,
             password= "testPassword",
             user= user_test)
